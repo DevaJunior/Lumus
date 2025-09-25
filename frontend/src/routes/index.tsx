@@ -9,6 +9,7 @@ import Patients from '../../renders/pages/Patients';
 import PatientDetail from '../../renders/pages/PatientDetail';
 import Agenda from '../../renders/pages/Agenda';
 import Financeiro from '../../renders/pages/Financeiro';
+import ForgotPassword from '../../renders/pages/ForgotPassword';
 
 const AppRoutes: React.FC = () => {
   const { currentUser, loading } = useAuth();
@@ -23,6 +24,8 @@ const AppRoutes: React.FC = () => {
       <Routes>
         <Route path="/login" element={currentUser ? <Navigate to="/" replace /> : <Login />} />
         <Route path="/register" element={currentUser ? <Navigate to="/" replace /> : <Register />} />
+        <Route path="/esqueci-minha-senha" element={currentUser ? <Navigate to="/" replace /> : <ForgotPassword />} />
+        
         
         <Route path="/" element={<ProtectedRoute />}>
           <Route index element={<Dashboard />} />

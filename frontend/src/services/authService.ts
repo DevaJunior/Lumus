@@ -1,4 +1,5 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, type Auth, type UserCredential, } from "firebase/auth"; import { auth } from "../config/firebase";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signOut, type Auth, type UserCredential, } from "firebase/auth"; import { auth } from "../config/firebase";
+
 
 class AuthService {
   private auth: Auth;
@@ -7,18 +8,16 @@ class AuthService {
     this.auth = authInstance;
   }
 
-  // Função de Login
   async login(email: string, password: string): Promise<UserCredential> {
     try {
       const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
       return userCredential;
     } catch (error) {
       console.error("Erro no login: ", error);
-      throw error; // Propaga o erro para ser tratado na UI
+      throw error;
     }
   }
 
-  // Função de Logout
   async logout(): Promise<void> {
     try {
       await signOut(this.auth);
@@ -28,18 +27,25 @@ class AuthService {
     }
   }
 
-  // NOVA FUNÇÃO DE REGISTRO
   async register(email: string, password: string): Promise<UserCredential> {
     try {
       const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
-      // Após o registro, o Firebase automaticamente loga o usuário.
       return userCredential;
     } catch (error) {
       console.error("Erro no registro: ", error);
       throw error;
     }
   }
+
+  // NOVA FUNÇÃO
+  async sendPasswordResetEmail(email: string): Promise<void> {
+    try {
+      await sendPasswordResetEmail(this.auth, email);
+    } catch (error) {
+      console.error("Erro ao enviar e-mail de redefinição de senha: ", error);
+      throw error;
+    }
+  }
 }
 
-// Exporta uma instância da classe, pronta para ser usada
 export const authService = new AuthService(auth);

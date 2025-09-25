@@ -12,15 +12,13 @@ const Login: React.FC = () => {
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
     setError(null);
-
     if (!email || !password) {
       setError('Por favor, preencha todos os campos.');
       return;
     }
-
     try {
       await authService.login(email, password);
-      navigate('/'); // Redireciona para a home após o login
+      navigate('/');
     } catch (err) {
       setError('Falha no login. Verifique seu e-mail e senha.');
       console.error(err);
@@ -35,30 +33,21 @@ const Login: React.FC = () => {
         <form onSubmit={handleLogin}>
           <div className="input-group">
             <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              type="email"
-              placeholder="seuemail@exemplo.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+            <input id="email" type="email" placeholder="seuemail@exemplo.com" value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
           <div className="input-group">
             <label htmlFor="password">Senha</label>
-            <input
-              id="password"
-              type="password"
-              placeholder="Sua senha"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <input id="password" type="password" placeholder="Sua senha" value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
+
+          {/* LINK ADICIONADO ABAIXO */}
+          <div className="forgot-password-link">
+            <Link to="/esqueci-minha-senha">Esqueceu sua senha?</Link>
+          </div>
+          
           {error && <p className="error-message">{error}</p>}
-          <button type="submit" className="login-button">
-            Entrar
-          </button>
+          <button type="submit" className="login-button">Entrar</button>
         </form>
-        {/* LINK ADICIONADO ABAIXO */}
         <div className="redirect-link">
             <p>Não tem uma conta? <Link to="/register">Cadastre-se</Link></p>
         </div>
