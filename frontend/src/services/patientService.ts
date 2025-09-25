@@ -1,6 +1,6 @@
 import { collection, addDoc, serverTimestamp, query, where, getDocs, type DocumentData, doc, getDoc, orderBy, updateDoc, } from "firebase/firestore";
 import { db } from "../config/firebase";
-import type { NewPatientData, Patient } from "../types/Patient";
+import type { NewPatientData, Patient, QuestionnaireAnswers } from "../types/Patient";
 import type { NewSessionNoteData } from "../types/SessionNote";
 import { type SessionNote } from './../types/SessionNote';
 import type { DiaryEntry, NewDiaryEntryData, UpdateDiaryEntryData } from "../types/DiaryEntry";
@@ -9,11 +9,13 @@ class PatientService {
   private patientCollection = collection(db, "patients");
 
   // --- Funções de Gerenciamento de Pacientes ---
+
   async addPatient(patientData: NewPatientData): Promise<string> {
     try {
       const docRef = await addDoc(this.patientCollection, {
         ...patientData,
         createdAt: serverTimestamp(),
+        hasCompletedQuestionnaire: false, // Define como falso na criação
       });
       return docRef.id;
     } catch (error) {
@@ -56,6 +58,7 @@ class PatientService {
   }
 
   // --- Funções de Anotações de Sessão ---
+
   async addSessionNote(patientId: string, noteData: NewSessionNoteData): Promise<string> {
     try {
       const notesCollectionRef = collection(db, "patients", patientId, "sessionNotes");
@@ -87,6 +90,7 @@ class PatientService {
   }
 
   // --- Funções do Diário do Paciente ---
+
   async getDiaryEntries(patientId: string): Promise<DiaryEntry[]> {
     const entriesCollectionRef = collection(db, "patients", patientId, "diaryEntries");
     const q = query(entriesCollectionRef, orderBy("createdAt", "desc"));
@@ -94,12 +98,11 @@ class PatientService {
     return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as DiaryEntry));
   }
   
-  // NOVA FUNÇÃO
   async getSharedDiaryEntries(patientId: string): Promise<DiaryEntry[]> {
     const entriesCollectionRef = collection(db, "patients", patientId, "diaryEntries");
     const q = query(
       entriesCollectionRef,
-      where("shared", "==", true), // O filtro chave para a privacidade
+      where("shared", "==", true),
       orderBy("createdAt", "desc")
     );
     const querySnapshot = await getDocs(q);
@@ -121,6 +124,16 @@ class PatientService {
     await updateDoc(entryDocRef, {
       ...entryData,
       updatedAt: serverTimestamp(),
+    });
+  }
+
+  // --- Função do Questionário Inicial ---
+
+  async saveQuestionnaireAnswers(patientId: string, answers: QuestionnaireAnswers): Promise<void> {
+    const patientDocRef = doc(db, "patients", patientId);
+    await updateDoc(patientDocRef, {
+      questionnaireAnswers: answers,
+      hasCompletedQuestionnaire: true,
     });
   }
 }

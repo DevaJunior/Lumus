@@ -20,6 +20,7 @@ import PatientDiary from '../../renders/pages/PatientDiary';
 import DiaryEditor from '../../renders/pages/DiaryEditor';
 
 import DashboardLayout from '../../renders/pages/DashboardLayout';
+import InitialQuestionnaire from '../../renders/pages/InitialQuestionnaire';
 
 const AppRoutes: React.FC = () => {
   const { currentUser, loading } = useAuth();
@@ -40,8 +41,10 @@ const AppRoutes: React.FC = () => {
         
         {/* Container para todas as rotas que exigem login */}
         <Route element={<ProtectedRoute />}>
+
           {/* Rota Raiz: Apenas redireciona baseado na função */}
           <Route path="/" element={<HomeRedirect />} />
+
           {/* Container para rotas de Psicólogo */}
           <Route element={<PsychologistRoute />}>
             <Route path="dashboard" element={<DashboardLayout><Dashboard /></DashboardLayout>} />
@@ -50,13 +53,16 @@ const AppRoutes: React.FC = () => {
             <Route path="agenda" element={<DashboardLayout><Agenda /></DashboardLayout>} />
             <Route path="financeiro" element={<DashboardLayout><Financeiro /></DashboardLayout>} />
           </Route>
+
           {/* Container para rotas de Paciente */}
           <Route element={<PatientRoute />}>
             <Route path="meu-dashboard" element={<PatientDashboard />} />
             <Route path="meu-diario" element={<PatientDiary />} />
             <Route path="meu-diario/novo" element={<DiaryEditor />} />
             <Route path="meu-diario/editar/:entryId" element={<DiaryEditor />} />
+            <Route path="questionario-inicial" element={<InitialQuestionnaire />} />
           </Route>
+          
         </Route>
       </Routes>
     </BrowserRouter>
