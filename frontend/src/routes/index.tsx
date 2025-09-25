@@ -8,6 +8,7 @@ import Dashboard from '../../renders/pages/Dashboard';
 import Patients from '../../renders/pages/Patients';
 import PatientDetail from '../../renders/pages/PatientDetail';
 import Agenda from '../../renders/pages/Agenda';
+import Financeiro from '../../renders/pages/Financeiro';
 
 const AppRoutes: React.FC = () => {
   const { currentUser, loading } = useAuth();
@@ -29,6 +30,7 @@ const AppRoutes: React.FC = () => {
           <Route path="pacientes/:patientId" element={<PatientDetail />} />
 
           <Route path="agenda" element={<Agenda />} />
+          <Route path="financeiro" element={<Financeiro />} />
 
         </Route>
       </Routes>
