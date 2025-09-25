@@ -1,16 +1,14 @@
-import { collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, Timestamp, Transaction, type DocumentData } from "firebase/firestore";
+import {  collection,  addDoc,  serverTimestamp,  query,  where,  getDocs,  orderBy,  Timestamp, type DocumentData, Transaction } from "firebase/firestore";
 import { db } from "../config/firebase";
 import type { NewTransactionData } from "../types/Transaction";
 
 class FinancialService {
   private transactionCollection = collection(db, "transactions");
 
-  // Adiciona uma nova transação (receita)
   async addTransaction(transactionData: NewTransactionData): Promise<string> {
     try {
       const docRef = await addDoc(this.transactionCollection, {
         ...transactionData,
-        // Garante que a data do pagamento seja salva como Timestamp
         date: Timestamp.fromDate(new Date(transactionData.date)),
         createdAt: serverTimestamp(),
       });
@@ -21,21 +19,23 @@ class FinancialService {
     }
   }
 
-  // Busca todas as transações de um psicólogo, ordenadas pela data do pagamento
-  async getTransactionsByPsychologist(psychologistId: string): Promise<Transaction[]> {
+  // FUNÇÃO MODIFICADA
+  // Agora retorna os dados brutos do Firestore
+  async getTransactionsByPsychologist(psychologistId: string): Promise<DocumentData[]> {
     try {
       const q = query(
         this.transactionCollection,
         where("psychologistId", "==", psychologistId),
-        orderBy("date", "desc") // Ordena das mais recentes para as mais antigas
+        orderBy("date", "desc")
       );
 
       const querySnapshot = await getDocs(q);
-      const transactions: Transaction[] = [];
-
-      querySnapshot.forEach((doc: DocumentData) => {
-        transactions.push({ id: doc.id, ...doc.data() } as Transaction);
-      });
+      
+      // Mapeia os documentos para um array de objetos, cada um com seu id e dados
+      const transactions = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
 
       return transactions;
     } catch (error) {

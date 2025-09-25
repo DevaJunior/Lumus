@@ -10,21 +10,27 @@ import type { Transaction } from '../../../src/types/Transaction';
 
 const Financeiro: React.FC = () => {
   const { currentUser } = useAuth();
+  // O estado continua esperando o nosso tipo customizado Transaction[]
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [patients, setPatients] = useState<Patient[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // FUNÇÃO MODIFICADA
   const fetchData = useCallback(async () => {
     if (!currentUser) return;
     try {
       setIsLoading(true);
-      const [transactionsData, patientsData] = await Promise.all([
+      const [transactionsDataRaw, patientsData] = await Promise.all([
         financialService.getTransactionsByPsychologist(currentUser.uid),
         patientService.getPatientsByPsychologist(currentUser.uid)
       ]);
-      setTransactions(transactionsData);
+
+      // Mapeia os dados brutos para o nosso tipo 'Transaction' aqui no componente
+      const formattedTransactions = transactionsDataRaw.map(data => data as Transaction);
+      
+      setTransactions(formattedTransactions);
       setPatients(patientsData);
     } catch (err) {
       setError("Não foi possível carregar os dados financeiros.");
@@ -38,6 +44,7 @@ const Financeiro: React.FC = () => {
     fetchData();
   }, [fetchData]);
 
+  // O resto do arquivo permanece exatamente o mesmo...
   const monthlyRevenue = useMemo(() => {
     const currentMonth = new Date().getMonth();
     const currentYear = new Date().getFullYear();
@@ -97,7 +104,6 @@ const Financeiro: React.FC = () => {
             + Registrar Transação
           </button>
         </header>
-
         <section className="summary-cards">
           <div className="summary-card">
             <h2>Faturamento do Mês</h2>
@@ -108,7 +114,6 @@ const Financeiro: React.FC = () => {
             <p>{transactions.filter(t => t.date.toDate().getMonth() === new Date().getMonth()).length}</p>
           </div>
         </section>
-
         <section className="transactions-list-container">
           <h2>Histórico de Transações</h2>
           {renderContent()}
