@@ -1,0 +1,47 @@
+.patient-dashboard-page {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  color: var(--text-primary);
+}
+
+.patient-dashboard-page h2 {
+  font-size: 1.8rem;
+}
+
+.patient-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.action-card {
+  background-color: var(--background-secondary);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--shadow-color);
+  border-left: 5px solid var(--accent-primary);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.action-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px var(--shadow-color);
+}
+
+.action-card h3 {
+  margin: 0 0 10px 0;
+}
+
+.action-card p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+@media (min-width: 768px) {
+  .patient-actions {
+    grid-template-columns: 1fr 1fr;
+  }
+}
