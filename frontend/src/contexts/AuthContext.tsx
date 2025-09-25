@@ -1,14 +1,13 @@
 import React, { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { onAuthStateChanged, type User } from 'firebase/auth';
 import { auth } from '../config/firebase';
-import { userService, type UserRole } from '../services/userService';
+import { userService, type UserProfile } from '../services/userService';
 import type { Patient } from '../types/Patient';
 import { patientService } from '../services/patientService';
 
 interface AuthContextType {
   currentUser: User | null;
-  userRole: UserRole['role'] | null;
-  userProfile: Patient | null; // Armazena o perfil completo do paciente
+  userProfile: UserProfile | Patient | null;
   loading: boolean;
 }
 
@@ -28,45 +27,43 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [userRole, setUserRole] = useState<UserRole['role'] | null>(null);
-  const [userProfile, setUserProfile] = useState<Patient | null>(null);
+  const [userProfile, setUserProfile] = useState<UserProfile | Patient | null>(null);
   const [loading, setLoading] = useState(true);
 
+  console.log("--- 3. AuthProvider: Componente renderizado. Estado de loading:", loading, "---"); // DEBUG
+
   useEffect(() => {
+    console.log("--- AuthProvider: useEffect iniciado (só deve aparecer uma vez) ---"); // DEBUG
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      console.log("--- 4. AuthProvider: onAuthStateChanged disparado. Usuário:", user?.email); // DEBUG
       setCurrentUser(user);
       if (user) {
-        const roleData = await userService.getUserRole(user.uid);
-        const role = roleData ? roleData.role : null;
-        setUserRole(role);
-
-        // Se o usuário for um paciente, busca os dados do perfil dele
-        if (role === 'patient') {
-          const profileData = await patientService.getPatientById(user.uid);
-          setUserProfile(profileData);
+        const baseProfile = await userService.getUserProfile(user.uid);
+        console.log("--- 5. AuthProvider: Perfil base (role/status) buscado:", baseProfile); // DEBUG
+        
+        if (baseProfile?.role === 'patient') {
+          const patientProfileData = await patientService.getPatientById(user.uid);
+          console.log("--- 6. AuthProvider: Perfil completo de paciente buscado:", patientProfileData); // DEBUG
+          setUserProfile(patientProfileData);
         } else {
-          setUserProfile(null);
+          setUserProfile(baseProfile);
         }
+        setLoading(false);
       } else {
-        setUserRole(null);
         setUserProfile(null);
+        setLoading(false);
       }
-      setLoading(false);
+      console.log("--- 7. AuthProvider: Fim do onAuthStateChanged, setLoading é false ---"); // DEBUG
     });
 
     return unsubscribe;
   }, []);
 
-  const value = {
-    currentUser,
-    userRole,
-    userProfile,
-    loading,
-  };
+  const value = { currentUser, userProfile, loading };
 
   return (
     <AuthContext.Provider value={value}>
-      {loading ? <div>Carregando plataforma...</div> : children}
+      {loading ? <div>Carregando plataforma... (do AuthContext)</div> : children}
     </AuthContext.Provider>
   );
 };

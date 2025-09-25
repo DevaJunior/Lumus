@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './styles.css';
 import { adminService, type PsychologistData } from '../../../src/services/adminService';
 
@@ -7,22 +7,30 @@ const ManagePsychologists: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchPsychologists = async () => {
-      try {
-        const data = await adminService.getAllPsychologists();
-        setPsychologists(data);
-      } catch (err) {
-        setError("Não foi possível carregar a lista.");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchPsychologists();
+  const fetchPsychologists = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const data = await adminService.getAllPsychologists();
+      setPsychologists(data);
+    } catch (err) {
+      setError("Não foi possível carregar a lista.");
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
+  useEffect(() => {
+    fetchPsychologists();
+  }, [fetchPsychologists]);
+
+  const handleApprove = async (uid: string) => {
+    if (window.confirm("Tem certeza que deseja aprovar este psicólogo?")) {
+      await adminService.updatePsychologistStatus(uid, 'approved');
+      fetchPsychologists(); // Recarrega a lista
+    }
+  };
+
   return (
-    // Para o MVP, não usaremos um layout complexo de admin
     <div className="admin-page">
       <h1>Gerenciar Psicólogos</h1>
       <p>Abaixo está a lista de todos os psicólogos cadastrados na plataforma.</p>
@@ -33,7 +41,7 @@ const ManagePsychologists: React.FC = () => {
           <table className="admin-table">
             <thead>
               <tr>
-                <th>UID do Usuário (ID de Autenticação)</th>
+                <th>UID do Usuário</th>
                 <th>Status</th>
                 <th>Ações</th>
               </tr>
@@ -41,9 +49,19 @@ const ManagePsychologists: React.FC = () => {
             <tbody>
               {psychologists.map(psy => (
                 <tr key={psy.uid}>
-                  <td>{psy.uid}</td>
-                  <td><span className="status-active">Ativo</span></td>
-                  <td><button disabled>Gerenciar</button></td>
+                  <td data-label="UID">{psy.uid}</td>
+                  <td data-label="Status">
+                    <span className={`status-badge status-${psy.status}`}>
+                      {psy.status === 'pending' ? 'Pendente' : 'Aprovado'}
+                    </span>
+                  </td>
+                  <td data-label="Ações">
+                    {psy.status === 'pending' && (
+                      <button className="approve-button" onClick={() => handleApprove(psy.uid)}>
+                        Aprovar
+                      </button>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>

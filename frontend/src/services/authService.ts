@@ -1,9 +1,7 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signOut, type Auth, type UserCredential, } from "firebase/auth"; import { auth } from "../config/firebase";
 import { userService } from "./userService";
 
-
 class AuthService {
-  // ... (funções login, logout, sendPasswordResetEmail permanecem iguais) ...
   private auth: Auth;
 
   constructor(authInstance: Auth) {
@@ -28,19 +26,21 @@ class AuthService {
       throw error;
     }
   }
-  
+
   async register(email: string, password: string): Promise<UserCredential> {
     try {
       const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
-      // Após criar o usuário na autenticação, cria o registro de função no Firestore
-      await userService.createUserRole(userCredential.user.uid, 'psychologist');
+      // ATUALIZAÇÃO CRÍTICA:
+      // Após criar o usuário na autenticação, cria o perfil dele no Firestore
+      // com role 'psychologist' e status 'pending'.
+      await userService.createPsychologistProfile(userCredential.user.uid);
       return userCredential;
     } catch (error) {
       console.error("Erro no registro: ", error);
       throw error;
     }
   }
-  
+
   async sendPasswordResetEmail(email: string): Promise<void> {
     try {
       await sendPasswordResetEmail(this.auth, email);

@@ -3,22 +3,23 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const HomeRedirect: React.FC = () => {
-  const { userRole, loading } = useAuth();
+  // Alterado de "userRole" para "userProfile"
+  const { userProfile, loading } = useAuth();
 
   if (loading) {
     return <div>Carregando...</div>;
   }
 
-  // ADICIONA O CASO PARA ADMIN
-  if (userRole === 'admin') {
+  // Agora verificamos a propriedade "role" dentro de "userProfile"
+  if (userProfile?.role === 'admin') {
     return <Navigate to="/admin/psicologos" replace />;
   }
 
-  if (userRole === 'psychologist') {
+  if (userProfile?.role === 'psychologist') {
     return <Navigate to="/dashboard" replace />;
   }
 
-  if (userRole === 'patient') {
+  if (userProfile?.role === 'patient') {
     return <Navigate to="/meu-dashboard" replace />;
   }
 

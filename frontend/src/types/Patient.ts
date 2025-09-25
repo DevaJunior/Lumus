@@ -1,12 +1,12 @@
 import { Timestamp } from "firebase/firestore";
 
-// Define um tipo para as respostas do questionário
 export type QuestionnaireAnswers = Record<string, string | number>;
 
 export interface Patient {
   id: string;
   name: string;
   email: string;
+  role: 'patient'; // ADICIONA A PROPRIEDADE 'role'
   phone?: string;
   psychologistId: string;
   createdAt: Timestamp;
@@ -14,4 +14,4 @@ export interface Patient {
   questionnaireAnswers?: QuestionnaireAnswers;
 }
 
-export type NewPatientData = Omit<Patient, 'id' | 'createdAt' | 'hasCompletedQuestionnaire' | 'questionnaireAnswers'>;
+export type NewPatientData = Omit<Patient, 'id' | 'createdAt' | 'hasCompletedQuestionnaire' | 'questionnaireAnswers' | 'role'>;

@@ -1,36 +1,34 @@
 import React from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import type { UserProfile } from '../services/userService';
 
 const PatientRoute: React.FC = () => {
-  const { userRole, userProfile, loading } = useAuth();
-  const location = useLocation();
+  // Alterado de "userRole" para "userProfile"
+  const { userProfile, loading } = useAuth();
 
   if (loading) {
     return <div>Verificando permissões...</div>;
   }
+  
+  const profile = userProfile as UserProfile;
 
-  // Primeiro, garante que é um paciente
-  if (userRole !== 'patient') {
+  // Se for paciente, permite o acesso
+  if (profile?.role === 'patient') {
+    return <Outlet />;
+  }
+
+  // Se for psicólogo ou admin, redireciona para o dashboard correto
+  if (profile?.role === 'psychologist') {
     return <Navigate to="/dashboard" replace />;
   }
   
-  // LÓGICA DE REDIRECIONAMENTO PARA O QUESTIONÁRIO
-  const hasCompletedQuestionnaire = userProfile?.hasCompletedQuestionnaire;
-
-  // Se não completou o questionário e NÃO está na página do questionário...
-  if (!hasCompletedQuestionnaire && location.pathname !== '/questionario-inicial') {
-    // ...redireciona para o questionário.
-    return <Navigate to="/questionario-inicial" replace />;
+  if (profile?.role === 'admin') {
+    return <Navigate to="/admin/psicologos" replace />;
   }
 
-  // Se já completou e tenta acessar o questionário novamente...
-  if (hasCompletedQuestionnaire && location.pathname === '/questionario-inicial') {
-      // ...redireciona para o dashboard principal dele.
-      return <Navigate to="/meu-dashboard" replace />;
-  }
-
-  return <Outlet />;
+  // Fallback
+  return <Navigate to="/login" replace />;
 };
 
 export default PatientRoute;

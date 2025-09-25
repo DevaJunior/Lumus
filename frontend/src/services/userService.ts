@@ -1,34 +1,35 @@
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../config/firebase";
 
-// Adiciona a função 'admin'
-export interface UserRole {
+export interface UserProfile {
   role: 'psychologist' | 'patient' | 'admin';
+  status: 'pending' | 'approved' | 'suspended'; // Novo campo de status
 }
 
 class UserService {
-  // Cria o documento de função para um novo usuário
-  async createUserRole(userId: string, role: 'psychologist' | 'patient'): Promise<void> {
+  // Cria o documento de perfil para um novo psicólogo
+  async createPsychologistProfile(userId: string): Promise<void> {
     try {
       const userDocRef = doc(db, "users", userId);
-      await setDoc(userDocRef, { role });
+      // Novos psicólogos sempre começam como 'pendente'
+      await setDoc(userDocRef, { role: 'psychologist', status: 'pending' });
     } catch (error) {
-      console.error("Erro ao criar a função do usuário:", error);
+      console.error("Erro ao criar o perfil do psicólogo:", error);
       throw new Error("Não foi possível configurar o usuário.");
     }
   }
 
-  // Busca a função de um usuário logado
-  async getUserRole(userId: string): Promise<UserRole | null> {
+  // Busca o perfil completo de um usuário logado
+  async getUserProfile(userId: string): Promise<UserProfile | null> {
     try {
       const userDocRef = doc(db, "users", userId);
       const docSnap = await getDoc(userDocRef);
       if (docSnap.exists()) {
-        return docSnap.data() as UserRole;
+        return docSnap.data() as UserProfile;
       }
       return null;
     } catch (error) {
-      console.error("Erro ao buscar a função do usuário:", error);
+      console.error("Erro ao buscar o perfil do usuário:", error);
       throw new Error("Não foi possível obter os dados do usuário.");
     }
   }

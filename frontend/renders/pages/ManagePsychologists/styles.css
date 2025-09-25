@@ -13,6 +13,7 @@
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px var(--shadow-color);
+  overflow-x: auto; /* Para responsividade da tabela */
 }
 .admin-table {
   width: 100%;
@@ -22,11 +23,30 @@
   padding: 12px;
   border-bottom: 1px solid var(--border-color);
   text-align: left;
+  white-space: nowrap; /* Impede que o conteúdo quebre linha */
 }
-.status-active {
-  background-color: color-mix(in srgb, var(--accent-positive) 20%, transparent);
-  color: var(--accent-positive);
-  padding: 4px 8px;
+.status-badge {
+  padding: 4px 10px;
   border-radius: 12px;
   font-weight: 600;
+  font-size: 0.9rem;
+}
+.status-approved {
+  background-color: color-mix(in srgb, var(--accent-positive) 20%, transparent);
+  color: var(--accent-positive);
+}
+.status-pending {
+  background-color: color-mix(in srgb, orange 20%, transparent);
+  color: orange;
+}
+.approve-button {
+  background-color: var(--accent-positive);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.approve-button:hover {
+  background-color: var(--accent-positive-hover);
 }
