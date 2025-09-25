@@ -1,0 +1,102 @@
+.patient-detail-page {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.detail-header {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.detail-header h1 {
+  margin: 0 0 10px 0;
+}
+
+.detail-header p {
+  margin: 5px 0;
+  color: #555;
+}
+
+.new-note-section, .notes-history-section {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.new-note-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.new-note-form textarea {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  font-family: Arial, sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.new-note-form button {
+  align-self: flex-end; /* Alinha o botão à direita */
+  background-color: #1877f2;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.new-note-form button:hover {
+  background-color: #166fe5;
+}
+
+.new-note-form button:disabled {
+  background-color: #a6c9f5;
+  cursor: not-allowed;
+}
+
+.notes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.note-card {
+  border: 1px solid #e0e0e0;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.note-date {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #555;
+  margin: 0 0 10px 0;
+}
+
+.note-content {
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.5;
+  white-space: pre-wrap; /* Preserva quebras de linha e espaços */
+  margin: 0;
+}
+
+/* --- Media Queries para Responsividade --- */
+@media (max-width: 768px) {
+  .new-note-form button {
+    align-self: stretch; /* Botão ocupa 100% da largura em mobile */
+  }
+}

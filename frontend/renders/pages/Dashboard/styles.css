@@ -1,0 +1,9 @@
+.dashboard-page-container {
+  text-align: center;
+}
+
+.dashboard-page-container h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: var(--text-primary);
+}

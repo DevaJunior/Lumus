@@ -1,0 +1,152 @@
+.patients-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.patients-header {
+  /* Em mobile, os itens ficam um embaixo do outro */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.patients-header h1 {
+  margin: 0;
+  font-size: 1.8rem; /* Fonte um pouco menor para mobile */
+}
+
+.add-patient-button {
+  background-color: #1877f2;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%; /* Ocupa a largura toda no mobile */
+}
+
+.patients-list-container {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 0; /* Removido para a tabela/lista controlar o padding */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.patients-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.patients-table thead {
+  /* Oculta o cabeçalho da tabela em mobile */
+  display: none;
+}
+
+.patients-table tbody, .patients-table tr, .patients-table td {
+  display: block; /* Transforma a tabela em um layout de bloco */
+}
+
+.patients-table tr {
+  border-bottom: 1px solid #e0e0e0;
+  padding: 15px;
+}
+.patients-table tr:last-child {
+  border-bottom: none;
+}
+
+.patients-table td {
+  padding: 5px 0;
+  display: flex;
+  justify-content: space-between; /* Alinha label e valor */
+  text-align: right;
+  font-size: 1rem;
+}
+
+/* Adiciona os labels (Nome, Email, etc.) antes do conteúdo da célula */
+.patients-table td::before {
+  content: attr(data-label);
+  font-weight: 600;
+  text-align: left;
+  margin-right: 10px;
+}
+
+
+/* Estados de carregamento, erro e vazio */
+.loading-state, .error-state, .empty-state {
+  text-align: center;
+  padding: 50px 20px;
+  color: #666;
+}
+
+.empty-state h3 {
+  margin-bottom: 10px;
+}
+
+.patients-table tbody tr.clickable-row {
+  cursor: pointer;
+}
+
+/* --- Media Query para tablets e telas maiores --- */
+@media (min-width: 768px) {
+  
+  .patients-table tbody tr.clickable-row:hover {
+    background-color: #f9f9f9;
+  }
+
+  .patients-header {
+    flex-direction: row; /* Volta ao layout lado a lado */
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+
+  .patients-header h1 {
+    font-size: 2rem; /* Restaura o tamanho da fonte */
+  }
+
+  .add-patient-button {
+    width: auto; /* Largura automática para o botão */
+  }
+  
+  .patients-list-container {
+    padding: 20px;
+  }
+
+  .patients-table {
+    display: table; /* Restaura o comportamento de tabela */
+  }
+
+  .patients-table thead {
+    display: table-header-group; /* Exibe o cabeçalho novamente */
+  }
+
+  .patients-table tbody, .patients-table tr {
+    display: table-row-group;
+  }
+
+  .patients-table tr {
+    display: table-row;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 0;
+  }
+
+  .patients-table td {
+    display: table-cell;
+    padding: 15px;
+    text-align: left;
+    border: none;
+  }
+
+  .patients-table td::before {
+    display: none; /* Oculta os labels :before */
+  }
+  
+  .patients-table tbody tr:hover {
+    background-color: #f9f9f9;
+  }
+}
