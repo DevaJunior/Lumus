@@ -1,0 +1,32 @@
+.admin-page {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  color: var(--text-primary);
+}
+.admin-page h1 {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 15px;
+}
+.admin-table-container {
+  background-color: var(--background-secondary);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.admin-table th, .admin-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--border-color);
+  text-align: left;
+}
+.status-active {
+  background-color: color-mix(in srgb, var(--accent-positive) 20%, transparent);
+  color: var(--accent-positive);
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+}

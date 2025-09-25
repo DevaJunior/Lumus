@@ -1,8 +1,9 @@
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../config/firebase";
 
+// Adiciona a função 'admin'
 export interface UserRole {
-  role: 'psychologist' | 'patient';
+  role: 'psychologist' | 'patient' | 'admin';
 }
 
 class UserService {

@@ -9,6 +9,11 @@ const HomeRedirect: React.FC = () => {
     return <div>Carregando...</div>;
   }
 
+  // ADICIONA O CASO PARA ADMIN
+  if (userRole === 'admin') {
+    return <Navigate to="/admin/psicologos" replace />;
+  }
+
   if (userRole === 'psychologist') {
     return <Navigate to="/dashboard" replace />;
   }
@@ -17,7 +22,6 @@ const HomeRedirect: React.FC = () => {
     return <Navigate to="/meu-dashboard" replace />;
   }
 
-  // Fallback caso o usuário não tenha uma função definida (pode ser uma tela de erro)
   return <Navigate to="/login" replace />;
 };
 

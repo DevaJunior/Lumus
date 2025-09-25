@@ -21,6 +21,8 @@ import DiaryEditor from '../../renders/pages/DiaryEditor';
 
 import DashboardLayout from '../../renders/pages/DashboardLayout';
 import InitialQuestionnaire from '../../renders/pages/InitialQuestionnaire';
+import AdminRoute from './AdminRoute';
+import ManagePsychologists from '../../renders/pages/ManagePsychologists';
 
 const AppRoutes: React.FC = () => {
   const { currentUser, loading } = useAuth();
@@ -44,6 +46,11 @@ const AppRoutes: React.FC = () => {
 
           {/* Rota Raiz: Apenas redireciona baseado na função */}
           <Route path="/" element={<HomeRedirect />} />
+
+          {/* Container para rotas de Administrador */}
+          <Route path="/admin" element={<AdminRoute />}>
+            <Route path="psicologos" element={<ManagePsychologists />} />
+          </Route>
 
           {/* Container para rotas de Psicólogo */}
           <Route element={<PsychologistRoute />}>

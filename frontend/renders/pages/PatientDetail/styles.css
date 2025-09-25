@@ -107,6 +107,45 @@
   box-shadow: 0 2px 4px var(--shadow-color);
 }
 
+
+.new-note-section, 
+.notes-history-section,
+.diary-history-section,
+.questionnaire-answers-section { /* Adiciona a nova classe aqui */
+  background-color: var(--background-secondary);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.answers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.answer-item {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 15px;
+}
+.answer-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.question-text {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 5px 0;
+}
+
+.answer-text {
+  color: var(--text-secondary);
+  margin: 0;
+  white-space: pre-wrap;
+}
+
 /* --- Media Queries para Responsividade --- */
 @media (max-width: 768px) {
   .new-note-form button {
