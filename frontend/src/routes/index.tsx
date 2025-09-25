@@ -18,7 +18,7 @@ const AppRoutes: React.FC = () => {
 
   return (
     // Adicione a propriedade "basename" aqui
-    <BrowserRouter basename="/Lumus">
+    <BrowserRouter>
       <Routes>
         <Route path="/login" element={currentUser ? <Navigate to="/" replace /> : <Login />} />
         <Route path="/register" element={currentUser ? <Navigate to="/" replace /> : <Register />} />

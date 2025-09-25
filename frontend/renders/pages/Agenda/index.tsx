@@ -1,9 +1,5 @@
 import './styles.css';
 import React, { useState, useEffect, useCallback } from 'react';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
 import { useAuth } from '../../../src/contexts/AuthContext';
 import type { Appointment } from '../../../src/types/Appointment';
 import { appointmentService } from '../../../src/services/appointmentService';
@@ -12,14 +8,17 @@ import type { Patient } from '../../../src/types/Patient';
 import { patientService } from '../../../src/services/patientService';
 import AddAppointmentModal from '../../modals/AddAppointmentModal';
 
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
+
 const Agenda: React.FC = () => {
   const { currentUser } = useAuth();
   const [appointments, setAppointments] = useState<any[]>([]);
   const [patients, setPatients] = useState<Patient[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  // Estados para o modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
@@ -27,19 +26,16 @@ const Agenda: React.FC = () => {
     if (!currentUser) return;
     try {
       setIsLoading(true);
-      // Busca agendamentos e pacientes em paralelo
       const [appointmentList, patientList] = await Promise.all([
         appointmentService.getAppointmentsByPsychologist(currentUser.uid),
         patientService.getPatientsByPsychologist(currentUser.uid)
       ]);
-      
       const formattedEvents = appointmentList.map((apt: Appointment) => ({
         id: apt.id,
         title: apt.title,
         start: apt.start,
         end: apt.end,
       }));
-
       setAppointments(formattedEvents);
       setPatients(patientList);
     } catch (err) {
@@ -53,14 +49,13 @@ const Agenda: React.FC = () => {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
-  
+
   const handleDateClick = (arg: any) => {
     setSelectedDate(arg.date);
     setIsModalOpen(true);
   };
 
   const handleAppointmentAdded = () => {
-    // Fecha o modal e recarrega os eventos
     setIsModalOpen(false);
     fetchData();
   };
