@@ -1,0 +1,130 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  min-height: 100vh;
+  background-color: var(--background-primary);
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.login-card {
+  background-color: var(--background-secondary);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.login-card h2 {
+  font-size: 2.5rem;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+
+.login-card p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+
+.login-card form {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group {
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--background-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-primary) 20%, transparent);
+}
+
+.login-button {
+  background-color: var(--accent-primary);
+  color: #ffffff;
+  border: none;
+  padding: 14px;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+  background-color: var(--accent-primary-hover);
+}
+
+.error-message {
+  color: var(--accent-negative);
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+.redirect-link {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.9rem;
+}
+
+.redirect-link a {
+  color: var(--accent-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.redirect-link a:hover {
+  text-decoration: underline;
+}
+
+
+.forgot-password-link {
+  text-align: right;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+
+.forgot-password-link a {
+  color: var(--accent-primary);
+  text-decoration: none;
+}
+
+.forgot-password-link a:hover {
+  text-decoration: underline;
+}
+
+/* Media Query para tablets e desktops */
+@media (min-width: 768px) {
+  .login-card {
+    padding: 40px;
+  }
+}

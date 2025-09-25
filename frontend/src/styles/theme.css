@@ -1,0 +1,50 @@
+/* Tema Light (Padrão) */
+:root {
+  --background-primary: #f0f2f5;    /* Fundo principal da aplicação */
+  --background-secondary: #ffffff;   /* Fundo de cards, modais, inputs */
+  --background-tertiary: #e4e6eb;    /* Fundo de botões secundários, hovers */
+  
+  --text-primary: #1c1e21;         /* Texto principal, títulos */
+  --text-secondary: #606770;        /* Texto secundário, parágrafos */
+  
+  --accent-primary: #1877f2;         /* Cor principal de botões e links */
+  --accent-primary-hover: #166fe5;  /* Hover da cor principal */
+  
+  --accent-positive: #42b72a;        /* Cor para ações de sucesso (Cadastro) */
+  --accent-positive-hover: #36a420; /* Hover da cor de sucesso */
+  
+  --accent-negative: #fa383e;        /* Cor para ações de perigo (Sair) */
+  --accent-negative-hover: #e12d33; /* Hover da cor de perigo */
+  
+  --border-color: #dddfe2;          /* Cor de bordas */
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Tema Dark */
+[data-theme='dark'] {
+  --background-primary: #18191a;
+  --background-secondary: #242526;
+  --background-tertiary: #3a3b3c;
+  
+  --text-primary: #e4e6eb;
+  --text-secondary: #b0b3b8;
+  
+  --accent-primary: #2d88ff;
+  --accent-primary-hover: #509dff;
+  
+  --accent-positive: #42b72a;
+  --accent-positive-hover: #36a420;
+  
+  --accent-negative: #fa383e;
+  --accent-negative-hover: #e12d33;
+  
+  --border-color: #3e4042;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Transição suave de cores ao trocar o tema */
+body {
+  background-color: var(--background-primary);
+  color: var(--text-secondary);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
