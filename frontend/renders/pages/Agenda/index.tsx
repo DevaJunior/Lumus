@@ -14,6 +14,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 
 const Agenda: React.FC = () => {
+  // ... (toda a lógica de estados e fetchData) ...
   const { currentUser } = useAuth();
   const [appointments, setAppointments] = useState<any[]>([]);
   const [patients, setPatients] = useState<Patient[]>([]);
@@ -61,15 +62,15 @@ const Agenda: React.FC = () => {
   };
 
   if (isLoading) {
-    return <DashboardLayout><div className="loading-state">Carregando agenda...</div></DashboardLayout>;
+    return <div className="loading-state">Carregando agenda...</div>
   }
-
   if (error) {
-    return <DashboardLayout><div className="error-state">{error}</div></DashboardLayout>;
+    return <div className="error-state">{error}</div>
   }
 
   return (
-    <DashboardLayout>
+    // Removido o <DashboardLayout> que estava aqui
+    <>
       <div className="agenda-page">
         <header className="agenda-header">
           <h1>Agenda</h1>
@@ -108,7 +109,7 @@ const Agenda: React.FC = () => {
         selectedDate={selectedDate}
         patients={patients}
       />
-    </DashboardLayout>
+    </>
   );
 };
 

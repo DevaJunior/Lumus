@@ -9,12 +9,11 @@ const PsychologistRoute: React.FC = () => {
     return <div>Verificando permissões...</div>;
   }
 
-  // Se o usuário logado não for um psicólogo, redireciona para o dashboard do paciente
   if (userRole !== 'psychologist') {
+    // Se não for psicólogo, manda para o dashboard do paciente
     return <Navigate to="/meu-dashboard" replace />;
   }
 
-  // Se for um psicólogo, permite o acesso à rota filha
   return <Outlet />;
 };
 

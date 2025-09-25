@@ -1,0 +1,68 @@
+.patient-diary-page {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  color: var(--text-primary);
+}
+.diary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.new-entry-button {
+  background-color: var(--accent-primary);
+  color: var(--background-secondary);
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+.diary-list {
+  display: grid;
+  gap: 20px;
+}
+.diary-entry-card {
+  background-color: var(--background-secondary);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--shadow-color);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.diary-entry-card:hover {
+  transform: translateY(-5px);
+}
+.entry-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+.entry-card-header h3 {
+  margin: 0;
+}
+.privacy-status {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.privacy-status.shared {
+  background-color: color-mix(in srgb, var(--accent-positive) 20%, transparent);
+  color: var(--accent-positive);
+}
+.privacy-status.private {
+  background-color: var(--background-tertiary);
+  color: var(--text-secondary);
+}
+.entry-card-content {
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.entry-card-date {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-align: right;
+  margin-top: 15px;
+}

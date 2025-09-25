@@ -5,7 +5,7 @@ import { userService, type UserRole } from '../services/userService';
 
 interface AuthContextType {
   currentUser: User | null;
-  userRole: UserRole['role'] | null; // 'psychologist', 'patient', ou null
+  userRole: UserRole['role'] | null;
   loading: boolean;
 }
 
@@ -30,15 +30,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      console.log("AuthProvider: onAuthStateChanged disparado. Usuário:", user?.email); // DEBUG
       setCurrentUser(user);
+
       if (user) {
-        // Se houver um usuário, busca sua função no Firestore
+        console.log("AuthProvider: Buscando função para o UID:", user.uid); // DEBUG
         const roleData = await userService.getUserRole(user.uid);
+        
+        // DEBUG: O que o Firestore retornou?
+        console.log("AuthProvider: Função do usuário (do Firestore):", roleData);
+
         setUserRole(roleData ? roleData.role : null);
+        setLoading(false);
       } else {
         setUserRole(null);
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     return unsubscribe;
@@ -52,7 +59,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {loading ? <div>Carregando plataforma...</div> : children}
     </AuthContext.Provider>
   );
 };

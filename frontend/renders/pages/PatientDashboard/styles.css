@@ -40,6 +40,20 @@
   color: var(--text-secondary);
 }
 
+.action-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+.action-card.disabled {
+  border-left-color: var(--background-tertiary);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.action-card.disabled:hover {
+  transform: none;
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
 @media (min-width: 768px) {
   .patient-actions {
     grid-template-columns: 1fr 1fr;

@@ -20,7 +20,8 @@
   color: #555;
 }
 
-.new-note-section, .notes-history-section {
+.new-note-section,
+.notes-history-section {
   background-color: #ffffff;
   padding: 20px;
   border-radius: 8px;
@@ -45,7 +46,8 @@
 }
 
 .new-note-form button {
-  align-self: flex-end; /* Alinha o botão à direita */
+  align-self: flex-end;
+  /* Alinha o botão à direita */
   background-color: #1877f2;
   color: white;
   border: none;
@@ -90,13 +92,25 @@
   font-size: 1rem;
   color: #333;
   line-height: 1.5;
-  white-space: pre-wrap; /* Preserva quebras de linha e espaços */
+  white-space: pre-wrap;
+  /* Preserva quebras de linha e espaços */
   margin: 0;
+}
+
+.new-note-section,
+.notes-history-section,
+.diary-history-section {
+  /* Adiciona a nova classe aqui */
+  background-color: var(--background-secondary);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--shadow-color);
 }
 
 /* --- Media Queries para Responsividade --- */
 @media (max-width: 768px) {
   .new-note-form button {
-    align-self: stretch; /* Botão ocupa 100% da largura em mobile */
+    align-self: stretch;
+    /* Botão ocupa 100% da largura em mobile */
   }
 }

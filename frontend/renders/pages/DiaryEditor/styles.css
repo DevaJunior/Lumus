@@ -1,0 +1,28 @@
+.diary-editor-page {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  color: var(--text-primary);
+}
+.editor-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: var(--background-secondary);
+  padding: 20px;
+  border-radius: 8px;
+}
+.form-group-inline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.share-toggle {
+  width: 20px;
+  height: 20px;
+}
+.editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}

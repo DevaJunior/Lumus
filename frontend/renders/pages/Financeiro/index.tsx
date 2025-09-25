@@ -96,8 +96,8 @@ const Financeiro: React.FC = () => {
   };
 
   return (
-    <DashboardLayout>
-      <div className="financeiro-page">
+    <>
+    <div className="financeiro-page">
         <header className="financeiro-header">
           <h1>Financeiro</h1>
           <button className="add-transaction-button" onClick={() => setIsModalOpen(true)}>
@@ -125,7 +125,7 @@ const Financeiro: React.FC = () => {
         onTransactionAdded={fetchData}
         patients={patients}
       />
-    </DashboardLayout>
+    </>
   );
 };
 

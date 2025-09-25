@@ -13,8 +13,9 @@ const Patients: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const navigate = useNavigate(); // Inicializa o hook de navegação
+  const navigate = useNavigate();
 
+  // ... (toda a lógica de fetchData, handlePatientAdded, handleRowClick) ...
   const fetchPatients = useCallback(async () => {
     if (currentUser) {
       try {
@@ -39,7 +40,7 @@ const Patients: React.FC = () => {
   };
 
   const handleRowClick = (patientId: string) => {
-    navigate(`/pacientes/${patientId}`); // Função para navegar
+    navigate(`/pacientes/${patientId}`);
   };
 
   const renderContent = () => {
@@ -68,7 +69,6 @@ const Patients: React.FC = () => {
         </thead>
         <tbody>
           {patients.map((patient) => (
-            // Adiciona onClick e classe para indicar que é clicável
             <tr key={patient.id} onClick={() => handleRowClick(patient.id)} className="clickable-row">
               <td data-label="Nome">{patient.name}</td>
               <td data-label="Email">{patient.email}</td>
@@ -81,7 +81,8 @@ const Patients: React.FC = () => {
   };
 
   return (
-    <DashboardLayout>
+    // Removido o <DashboardLayout> que estava aqui
+    <>
       <div className="patients-page">
         <header className="patients-header">
           <h1>Meus Pacientes</h1>
@@ -98,7 +99,7 @@ const Patients: React.FC = () => {
         onClose={() => setIsModalOpen(false)}
         onPatientAdded={handlePatientAdded}
       />
-    </DashboardLayout>
+    </>
   );
 };
 
