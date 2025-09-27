@@ -23,6 +23,10 @@ const HomeRedirect: React.FC = () => {
     return <Navigate to="/meu-dashboard" replace />;
   }
 
+  if (userProfile?.role === 'admin') {
+    return <Navigate to="/admin/dashboard" replace />;
+  }
+
   return <Navigate to="/login" replace />;
 };
 

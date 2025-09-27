@@ -1,0 +1,23 @@
+.video-call-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
+}
+
+.jitsi-container {
+  width: 100%;
+  height: 100%;
+}
+
+.video-call-status {
+  color: var(--text-primary);
+  font-size: 1.5rem;
+}
+
+.video-call-status.error {
+  color: var(--accent-negative);
+  padding: 20px;
+}

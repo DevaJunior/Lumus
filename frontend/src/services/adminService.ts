@@ -1,10 +1,14 @@
-import { collection, query, where, getDocs, type DocumentData, doc, updateDoc } from "firebase/firestore";
+import { collection, query, where, getDocs, getCountFromServer, type DocumentData } from "firebase/firestore";
 import { db } from "../config/firebase";
 import type { UserProfile } from "./userService";
 
-// Agora o tipo de dado inclui o perfil completo do usuário
-export interface PsychologistData extends UserProfile {
-    uid: string;
+export interface PsychologistData extends UserProfile { uid: string; }
+
+export interface PlatformStats {
+  psychologistCount: number;
+  patientCount: number;
+  appointmentCount: number;
+  totalRevenue: number;
 }
 
 class AdminService {
@@ -25,13 +29,38 @@ class AdminService {
   }
 
   // NOVA FUNÇÃO
-  async updatePsychologistStatus(uid: string, status: 'approved' | 'suspended'): Promise<void> {
+  async getPlatformStats(): Promise<PlatformStats> {
     try {
-      const userDocRef = doc(db, "users", uid);
-      await updateDoc(userDocRef, { status: status });
+      const psyQuery = query(collection(db, "users"), where("role", "==", "psychologist"));
+      const patCollection = collection(db, "patients");
+      const apptCollection = collection(db, "appointments");
+      const transCollection = collection(db, "transactions");
+
+      const psyCountPromise = getCountFromServer(psyQuery);
+      const patCountPromise = getCountFromServer(patCollection);
+      const apptCountPromise = getCountFromServer(apptCollection);
+      const totalRevenuePromise = getDocs(transCollection);
+
+      const [psySnapshot, patSnapshot, apptSnapshot, revenueSnapshot] = await Promise.all([
+        psyCountPromise,
+        patCountPromise,
+        apptCountPromise,
+        totalRevenuePromise
+      ]);
+
+      const totalRevenue = revenueSnapshot.docs.reduce(
+        (sum, doc) => sum + doc.data().amount, 0
+      );
+
+      return {
+        psychologistCount: psySnapshot.data().count,
+        patientCount: patSnapshot.data().count,
+        appointmentCount: apptSnapshot.data().count,
+        totalRevenue: totalRevenue
+      };
     } catch (error) {
-      console.error("Erro ao atualizar status do psicólogo:", error);
-      throw new Error("Não foi possível atualizar o status.");
+      console.error("Erro ao buscar estatísticas da plataforma:", error);
+      throw new Error("Não foi possível carregar as estatísticas.");
     }
   }
 }

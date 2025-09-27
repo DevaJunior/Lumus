@@ -12,31 +12,47 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import type { EventApi, EventClickArg, EventInput } from 'fullcalendar/index.js';
+import AppointmentDetailModal from '../../modals/AppointmentDetailModal';
 
 const Agenda: React.FC = () => {
-  // ... (toda a lógica de estados e fetchData) ...
   const { currentUser } = useAuth();
-  const [appointments, setAppointments] = useState<any[]>([]);
+  const [appointments, setAppointments] = useState<EventInput[]>([]);
   const [patients, setPatients] = useState<Patient[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
-  const fetchData = useCallback(async () => {
+  const [selectedEvent, setSelectedEvent] = useState<EventApi | null>(null);
+
+  const loadData = useCallback(async () => {
     if (!currentUser) return;
+    setIsLoading(true);
     try {
-      setIsLoading(true);
       const [appointmentList, patientList] = await Promise.all([
         appointmentService.getAppointmentsByPsychologist(currentUser.uid),
         patientService.getPatientsByPsychologist(currentUser.uid)
       ]);
-      const formattedEvents = appointmentList.map((apt: Appointment) => ({
-        id: apt.id,
-        title: apt.title,
-        start: apt.start,
-        end: apt.end,
-      }));
+
+      const formattedEvents = appointmentList.map((apt: Appointment): EventInput => {
+        const status = apt.status;
+        let backgroundColor = 'var(--accent-primary)';
+        if (status === 'pending') backgroundColor = 'orange';
+        if (status === 'cancelled') backgroundColor = 'grey';
+
+        return {
+          id: apt.id,
+          title: apt.title,
+          start: apt.start,
+          end: apt.end,
+          backgroundColor,
+          borderColor: backgroundColor,
+          extendedProps: { status }
+        };
+      });
+
       setAppointments(formattedEvents);
       setPatients(patientList);
     } catch (err) {
@@ -48,66 +64,67 @@ const Agenda: React.FC = () => {
   }, [currentUser]);
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    loadData();
+  }, [loadData]);
 
   const handleDateClick = (arg: any) => {
     setSelectedDate(arg.date);
-    setIsModalOpen(true);
+    setIsAddModalOpen(true);
   };
 
-  const handleAppointmentAdded = () => {
-    setIsModalOpen(false);
-    fetchData();
+  const handleEventClick = (clickInfo: EventClickArg) => {
+    setSelectedEvent(clickInfo.event);
   };
 
-  if (isLoading) {
-    return <div className="loading-state">Carregando agenda...</div>
-  }
-  if (error) {
-    return <div className="error-state">{error}</div>
-  }
+  const handleModalCloseAndRefresh = () => {
+    setIsAddModalOpen(false);
+    setSelectedEvent(null);
+    loadData();
+  };
 
   return (
-    // Removido o <DashboardLayout> que estava aqui
     <>
       <div className="agenda-page">
         <header className="agenda-header">
           <h1>Agenda</h1>
-          <p>Clique em um dia para adicionar um novo agendamento.</p>
+          <p>Clique em um dia para adicionar um novo agendamento ou em uma solicitação para gerenciá-la.</p>
         </header>
         <div className="calendar-container">
-          <FullCalendar
-            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-            initialView="dayGridMonth"
-            headerToolbar={{
-              left: 'prev,next today',
-              center: 'title',
-              right: 'dayGridMonth,timeGridWeek,timeGridDay'
-            }}
-            events={appointments}
-            editable={true}
-            selectable={true}
-            selectMirror={true}
-            dayMaxEvents={true}
-            weekends={true}
-            dateClick={handleDateClick}
-            locale="pt-br"
-            buttonText={{
-              today: 'Hoje',
-              month: 'Mês',
-              week: 'Semana',
-              day: 'Dia',
-            }}
-          />
+          {isLoading ? <p>Carregando...</p> :
+            <FullCalendar
+              plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+              initialView="dayGridMonth"
+              headerToolbar={{
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+              }}
+              events={appointments}
+              editable={true}
+              selectable={true}
+              selectMirror={true}
+              dayMaxEvents={true}
+              weekends={true}
+              locale="pt-br"
+              buttonText={{ today: 'Hoje', month: 'Mês', week: 'Semana', day: 'Dia' }}
+              dateClick={handleDateClick}
+              eventClick={handleEventClick}
+            />
+          }
         </div>
       </div>
       <AddAppointmentModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onAppointmentAdded={handleAppointmentAdded}
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onAppointmentAdded={handleModalCloseAndRefresh}
         selectedDate={selectedDate}
         patients={patients}
+      />
+      <AppointmentDetailModal
+        isOpen={Boolean(selectedEvent)}
+        onClose={() => setSelectedEvent(null)}
+        event={selectedEvent}
+        onStatusChange={handleModalCloseAndRefresh}
       />
     </>
   );

@@ -25,4 +25,41 @@
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+  align-items: center; /* Alinha os botões verticalmente */
+}
+/* NOVO ESTILO */
+.delete-button {
+  margin-right: auto; /* Empurra o botão de excluir para a esquerda */
+  background-color: transparent;
+  color: var(--accent-negative);
+  border: none;
+  padding: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.delete-button:hover {
+  text-decoration: underline;
+}
+
+/* Reutilizando classes de botões já existentes */
+.button-primary, .button-secondary {
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.button-secondary {
+  background-color: var(--background-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+.button-primary {
+  background-color: var(--accent-primary);
+  color: #fff;
+}
+.error-message {
+  color: var(--accent-negative);
 }
