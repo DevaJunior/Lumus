@@ -34,6 +34,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           <NavLink to="/" end className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
             Início
           </NavLink>
+          <NavLink to="/mensagens" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+            Mensagens
+          </NavLink>
           <NavLink to="/pacientes" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
             Pacientes
           </NavLink>
@@ -42,6 +45,12 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           </NavLink>
           <NavLink to="/financeiro" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
             Financeiro
+          </NavLink>
+          <NavLink to="/configuracoes" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+            Configurações
+          </NavLink>
+          <NavLink to="/assinatura" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+            Assinatura
           </NavLink>
         </nav>
         <div className="sidebar-footer">

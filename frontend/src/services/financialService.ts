@@ -19,8 +19,6 @@ class FinancialService {
     }
   }
 
-  // FUNÇÃO MODIFICADA
-  // Agora retorna os dados brutos do Firestore
   async getTransactionsByPsychologist(psychologistId: string): Promise<DocumentData[]> {
     try {
       const q = query(
@@ -30,8 +28,6 @@ class FinancialService {
       );
 
       const querySnapshot = await getDocs(q);
-      
-      // Mapeia os documentos para um array de objetos, cada um com seu id e dados
       const transactions = querySnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
@@ -41,6 +37,29 @@ class FinancialService {
     } catch (error) {
       console.error("Erro ao buscar transações: ", error);
       throw new Error("Não foi possível buscar as transações.");
+    }
+  }
+  
+  // FUNÇÃO MODIFICADA
+  // Agora retorna os dados brutos (DocumentData) em vez de tentar fazer o casting aqui.
+  async getTransactionsByPatient(patientId: string): Promise<DocumentData[]> {
+    try {
+      const q = query(
+        this.transactionCollection,
+        where("patientId", "==", patientId),
+        orderBy("date", "desc")
+      );
+
+      const querySnapshot = await getDocs(q);
+      const transactions = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+
+      return transactions;
+    } catch (error) {
+      console.error("Erro ao buscar transações do paciente: ", error);
+      throw new Error("Não foi possível buscar o histórico de pagamentos.");
     }
   }
 }

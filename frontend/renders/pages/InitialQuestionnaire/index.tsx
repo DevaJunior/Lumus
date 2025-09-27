@@ -4,15 +4,7 @@ import './styles.css';
 import type { QuestionnaireAnswers } from '../../../src/types/Patient';
 import { useAuth } from '../../../src/contexts/AuthContext';
 import { patientService } from './../../../src/services/patientService';
-
-// Para o MVP, as perguntas são definidas aqui. No futuro, poderiam vir do banco de dados.
-const questions = [
-  { id: 'main_reason', text: 'Qual o principal motivo que te trouxe à terapia?', type: 'textarea' },
-  { id: 'mood_level', text: 'Numa escala de 1 a 10, como você avalia seu humor na última semana?', type: 'number', min: 1, max: 10 },
-  { id: 'symptoms', text: 'Você tem experienciado ansiedade, estresse ou desânimo com frequência?', type: 'radio', options: ['Sim', 'Não', 'Às vezes'] },
-  { id: 'previous_therapy', text: 'Você já fez terapia antes?', type: 'radio', options: ['Sim', 'Não'] },
-  { id: 'expectations', text: 'O que você espera alcançar com a terapia?', type: 'textarea' },
-];
+import { questions } from '../../../src/constants/questionnaire';
 
 const InitialQuestionnaire: React.FC = () => {
   const { currentUser } = useAuth();

@@ -1,20 +1,34 @@
 import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import type { UserProfile } from '../services/userService';
 
 const PatientRoute: React.FC = () => {
-  const { userRole, loading } = useAuth();
+  // Alterado de "userRole" para "userProfile"
+  const { userProfile, loading } = useAuth();
 
   if (loading) {
     return <div>Verificando permissões...</div>;
   }
+  
+  const profile = userProfile as UserProfile;
 
-  if (userRole !== 'patient') {
-    // Se não for paciente, manda para o dashboard principal do psicólogo
-    return <Navigate to="/dashboard" replace />;
+  // Se for paciente, permite o acesso
+  if (profile?.role === 'patient') {
+    return <Outlet />;
   }
 
-  return <Outlet />;
+  // Se for psicólogo ou admin, redireciona para o dashboard correto
+  if (profile?.role === 'psychologist') {
+    return <Navigate to="/dashboard" replace />;
+  }
+  
+  if (profile?.role === 'admin') {
+    return <Navigate to="/admin/psicologos" replace />;
+  }
+
+  // Fallback
+  return <Navigate to="/login" replace />;
 };
 
 export default PatientRoute;

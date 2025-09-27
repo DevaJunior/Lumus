@@ -1,4 +1,4 @@
-import { collection, addDoc, serverTimestamp, query, where, getDocs, type DocumentData, doc, getDoc, orderBy, updateDoc, } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, query, where, getDocs, type DocumentData, doc, getDoc, orderBy, updateDoc, deleteDoc, } from "firebase/firestore";
 import { db } from "../config/firebase";
 import type { NewPatientData, Patient, QuestionnaireAnswers } from "../types/Patient";
 import type { NewSessionNoteData } from "../types/SessionNote";
@@ -8,7 +8,6 @@ import type { DiaryEntry, NewDiaryEntryData, UpdateDiaryEntryData } from "../typ
 class PatientService {
   private patientCollection = collection(db, "patients");
 
-  // --- Funções de Gerenciamento de Pacientes ---
 
   async addPatient(patientData: NewPatientData): Promise<string> {
     try {
@@ -98,6 +97,15 @@ class PatientService {
     return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as DiaryEntry));
   }
   
+  async getDiaryEntryById(patientId: string, entryId: string): Promise<DiaryEntry | null> {
+    const entryDocRef = doc(db, "patients", patientId, "diaryEntries", entryId);
+    const docSnap = await getDoc(entryDocRef);
+    if (docSnap.exists()) {
+      return { id: docSnap.id, ...docSnap.data() } as DiaryEntry;
+    }
+    return null;
+  }
+
   async getSharedDiaryEntries(patientId: string): Promise<DiaryEntry[]> {
     const entriesCollectionRef = collection(db, "patients", patientId, "diaryEntries");
     const q = query(
@@ -125,6 +133,11 @@ class PatientService {
       ...entryData,
       updatedAt: serverTimestamp(),
     });
+  }
+
+  async deleteDiaryEntry(patientId: string, entryId: string): Promise<void> {
+    const entryDocRef = doc(db, "patients", patientId, "diaryEntries", entryId);
+    await deleteDoc(entryDocRef);
   }
 
   // --- Função do Questionário Inicial ---

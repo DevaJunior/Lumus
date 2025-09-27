@@ -5,6 +5,7 @@ import AppRoutes from './routes';
 import { ThemeProvider } from './contexts/ThemeContext';
 
 function App() {
+  console.log("--- 2. App.tsx: Renderizando App ---"); // DEBUG
   return (
     <AuthProvider>
       <ThemeProvider>

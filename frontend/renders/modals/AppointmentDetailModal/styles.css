@@ -1,0 +1,52 @@
+.appointment-details p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin: 10px 0;
+}
+
+.appointment-details p strong {
+  color: var(--text-primary);
+}
+
+.status-text {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+.status-text.status-pending { color: orange; }
+.status-text.status-confirmed { color: var(--accent-primary); }
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+.button-confirm,
+.button-decline {
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.button-confirm {
+  background-color: var(--accent-positive);
+  color: #fff;
+}
+.button-confirm:hover {
+  background-color: var(--accent-positive-hover);
+}
+
+.button-decline {
+  background-color: var(--accent-negative);
+  color: #fff;
+}
+.button-decline:hover {
+  background-color: var(--accent-negative-hover);
+}

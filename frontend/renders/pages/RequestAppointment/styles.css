@@ -1,0 +1,41 @@
+.request-appointment-page {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  color: var(--text-primary);
+}
+
+.request-appointment-page h1 {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 15px;
+}
+
+.request-appointment-page p {
+  color: var(--text-secondary);
+  margin-bottom: 30px;
+}
+
+.calendar-container {
+  background-color: var(--background-secondary);
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+/* Ajustes no FullCalendar para o tema */
+.fc {
+  color: var(--text-primary);
+  --fc-border-color: var(--border-color);
+  --fc-page-bg-color: var(--background-secondary);
+  --fc-neutral-bg-color: var(--background-primary);
+}
+.fc .fc-button-primary {
+  background-color: var(--accent-primary);
+  border-color: var(--accent-primary);
+}
+
+@media (min-width: 768px) {
+  .calendar-container {
+    padding: 20px;
+  }
+}
