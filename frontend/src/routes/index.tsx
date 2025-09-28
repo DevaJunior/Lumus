@@ -19,7 +19,6 @@ import PatientDashboard from '../../renders/pages/PatientDashboard';
 import PatientDiary from '../../renders/pages/PatientDiary';
 import DiaryEditor from '../../renders/pages/DiaryEditor';
 
-import DashboardLayout from '../../renders/pages/DashboardLayout';
 import InitialQuestionnaire from '../../renders/pages/InitialQuestionnaire';
 import AdminRoute from './AdminRoute';
 import ManagePsychologists from '../../renders/pages/ManagePsychologists';
@@ -33,14 +32,17 @@ import Chat from '../../renders/pages/Chat';
 import AdminLayout from '../../renders/pages/AdminLayout';
 import PatientChat from '../../renders/pages/PatientChat';
 import AdminDashboard from '../../renders/pages/AdminDashboard';
+import DashboardLayout from './../../renders/pages/DashboardLayout/index';
+import Profile from '../../renders/pages/Profile';
+import AppearanceSettings from '../../renders/pages/Settings/AppearanceSettings';
+import WorkHoursSettings from '../../renders/pages/Settings/WorkHoursSettings';
+import NotificationSettings from '../../renders/pages/Settings/NotificationSettings';
 
 const AppRoutes: React.FC = () => {
   const { currentUser, loading } = useAuth();
 
-  // A tela de carregamento principal agora é controlada pelo AuthProvider,
-  // mas podemos manter esta como uma segurança extra.
   if (loading) {
-    return <div>Carregando...</div>;
+    return <div>Carregando plataforma...</div>;
   }
 
   return (
@@ -54,37 +56,41 @@ const AppRoutes: React.FC = () => {
         {/* Container para todas as rotas que exigem login */}
         <Route element={<ProtectedRoute />}>
 
-          {/* Container para rotas de Administrador com o novo layout */}
-          <Route path="/admin" element={<AdminRoute />}>
-            <Route element={<AdminLayout />}>
-              <Route path="dashboard" element={<AdminDashboard/>} />
-              <Route path="psicologos" element={<ManagePsychologists />} />
-            </Route>
-          </Route>
-
           {/* Rota da Videochamada - Acessível por ambos os papéis */}
           <Route path="/consulta/:appointmentId" element={<VideoCall />} />
+
+
+          {/* ROTA DE CONFIGURAÇÕES ATUALIZADA */}
+          <Route path="configuracoes" element={<DashboardLayout title="Configurações"><Settings /></DashboardLayout>}>
+            {/* Rota padrão: redireciona para a primeira aba */}
+            <Route index element={<Navigate to="aparencia" replace />} />
+            <Route path="aparencia" element={<AppearanceSettings />} />
+            <Route path="horarios" element={<WorkHoursSettings />} />
+            <Route path="notificacoes" element={<NotificationSettings />} />
+          </Route>
 
           {/* Rota Raiz: Apenas redireciona baseado na função */}
           <Route path="/" element={<HomeRedirect />} />
 
-          {/* Rota de Assinatura (acessível por psicólogos aprovados, mas sem assinatura) */}
-          <Route path="/assinatura" element={<Subscription />} />
-
           {/* Container para rotas de Administrador */}
           <Route path="/admin" element={<AdminRoute />}>
-            <Route path="psicologos" element={<ManagePsychologists />} />
+            <Route element={<AdminLayout />}>
+              <Route path="dashboard" element={<AdminDashboard />} />
+              <Route path="psicologos" element={<ManagePsychologists />} />
+            </Route>
           </Route>
 
           {/* Container para rotas de Psicólogo */}
           <Route element={<PsychologistRoute />}>
-            <Route path="dashboard" element={<DashboardLayout><Dashboard /></DashboardLayout>} />
-            <Route path="pacientes" element={<DashboardLayout><Patients /></DashboardLayout>} />
-            <Route path="pacientes/:patientId" element={<DashboardLayout><PatientDetail /></DashboardLayout>} />
-            <Route path="agenda" element={<DashboardLayout><Agenda /></DashboardLayout>} />
-            <Route path="financeiro" element={<DashboardLayout><Financeiro /></DashboardLayout>} />
-            <Route path="mensagens" element={<DashboardLayout><Chat /></DashboardLayout>} />
-            <Route path="configuracoes" element={<DashboardLayout><Settings /></DashboardLayout>} />
+            <Route path="dashboard" element={<DashboardLayout title="Início"><Dashboard /></DashboardLayout>} />
+            <Route path="perfil" element={<DashboardLayout title="Meu Perfil"><Profile /></DashboardLayout>} />
+            <Route path="mensagens" element={<DashboardLayout title="Mensagens"><Chat /></DashboardLayout>} />
+            <Route path="pacientes" element={<DashboardLayout title="Meus Pacientes"><Patients /></DashboardLayout>} />
+            <Route path="pacientes/:patientId" element={<DashboardLayout title="Prontuário do Paciente"><PatientDetail /></DashboardLayout>} />
+            <Route path="agenda" element={<DashboardLayout title="Agenda"><Agenda /></DashboardLayout>} />
+            <Route path="financeiro" element={<DashboardLayout title="Financeiro"><Financeiro /></DashboardLayout>} />
+            <Route path="configuracoes" element={<DashboardLayout title="Configurações"><Settings /></DashboardLayout>} />
+            <Route path="assinatura" element={<DashboardLayout title="Assinatura"><Subscription /></DashboardLayout>} />
           </Route>
 
           {/* Container para rotas de Paciente */}

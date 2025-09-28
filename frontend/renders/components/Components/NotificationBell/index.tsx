@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../../src/contexts/AuthContext';
 import { notificationService } from '../../../../src/services/notificationService';
 import { type Notification } from '../../../../src/types/Notification';
+import { BellIcon } from '../Icons';
 
 const NotificationBell: React.FC = () => {
   const { currentUser } = useAuth();
@@ -34,7 +35,7 @@ const NotificationBell: React.FC = () => {
   return (
     <div className="notification-bell">
       <button onClick={() => setIsOpen(!isOpen)} className="bell-button">
-        🔔
+        <BellIcon />
         {unreadCount > 0 && <span className="notification-badge">{unreadCount}</span>}
       </button>
       {isOpen && (

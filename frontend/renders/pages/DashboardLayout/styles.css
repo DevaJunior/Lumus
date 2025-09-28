@@ -1,26 +1,113 @@
-.layout-container {
+.layout-root {
   display: flex;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  font-family: Arial, sans-serif;
+  background-color: var(--background-primary);
 }
 
 .sidebar {
-  /* Por padrão (mobile), o sidebar é oculto */
-  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260px;
+  height: 100vh;
+  background-color: var(--background-secondary);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+  z-index: 1100;
 }
 
-.main-content {
-  /* Por padrão (mobile), o conteúdo principal ocupa toda a tela */
+.sidebar.open {
+  transform: translateX(0);
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1099;
+}
+
+.sidebar-overlay.open {
+  display: block;
+}
+
+.content-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: margin-left 0.3s ease-in-out;
+}
+
+.topbar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 20px;
+  height: 60px;
+  background-color: var(--background-secondary);
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.topbar-left {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.topbar-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.topbar-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+}
+
+.topbar-logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--accent-primary);
+  margin: 0;
+}
+
+.topbar-title {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.menu-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+.page-content-area {
   padding: 20px;
   overflow-y: auto;
-  background-color: var(--background-primary);
-  box-sizing: border-box;
+  flex-grow: 1;
 }
 
-/* --- Estilos da Sidebar (visível em telas maiores) --- */
 .sidebar-header {
   text-align: center;
   margin-bottom: 40px;
@@ -28,144 +115,96 @@
 
 .sidebar-logo {
   font-size: 2rem;
-  font-weight: bold;
-  color: var(--accent-primary);
-  margin: 0;
 }
 
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   flex-grow: 1;
 }
 
 .nav-link {
   color: var(--text-secondary);
   text-decoration: none;
-  font-size: 1rem;
-  padding: 12px 16px;
-  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 10px 12px;
+  border-radius: 6px;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .nav-link:hover {
   background-color: var(--background-tertiary);
+  color: var(--text-primary);
 }
 
 .nav-link.active {
   background-color: var(--accent-primary);
-  color: var(--background-secondary);
+  color: #fff;
   font-weight: 600;
 }
 
 .sidebar-footer {
   margin-top: auto;
-}
-
-.theme-toggle {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding-bottom: 20px;
-  margin-bottom: 20px;
-  border-bottom: 1px solid var(--border-color);
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-}
-
-.theme-toggle-button {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid var(--border-color);
-  background-color: var(--background-tertiary);
-  color: var(--text-primary);
-  border-radius: 6px;
-  cursor: pointer;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-color);
 }
 
 .user-profile {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 10px;
-  text-align: center;
-  padding-top: 0;
-  border-top: none;
+  gap: 12px;
 }
 
 .user-profile span {
   font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-primary);
   word-break: break-all;
 }
 
 .logout-button {
   background-color: transparent;
-  color: var(--accent-negative);
-  border: 1px solid var(--accent-negative);
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-weight: bold;
+  color: var(--text-secondary);
+  border: none;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  width: 100%;
+  padding: 8px;
+  margin-left: auto;
 }
 
 .logout-button:hover {
-  background-color: var(--accent-negative);
-  color: var(--background-secondary);
+  color: var(--accent-negative);
 }
 
-.main-content {
-  flex-grow: 1;
-  padding: 0; /* Removido para o header e conteúdo controlarem */
-  overflow-y: auto;
-  background-color: var(--background-primary);
-  display: flex; /* Adicionado */
-  flex-direction: column; /* Adicionado */
-}
 
-.main-content-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 40px;
-  background-color: var(--background-secondary);
-  border-bottom: 1px solid var(--border-color);
-  flex-shrink: 0; /* Impede que o header encolha */
-}
-
-/* Adiciona padding de volta ao conteúdo que vem depois do header */
-.main-content > *:not(header) {
-  padding: 40px;
-}
-
-/* Media Query para tablets e telas maiores */
-@media (min-width: 768px) {
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    width: 250px;
-    flex-shrink: 0;
-    background-color: var(--background-secondary);
-    border-right: 1px solid var(--border-color);
-    color: var(--text-primary);
-    padding: 20px;
-    box-sizing: border-box;
+/* Responsividade e Modo Fixo */
+@media (min-width: 1024px) {
+  .page-content-area {
+    padding: 32px;
   }
 
-  .main-content {
-    width: auto;
-    flex-grow: 1;
-    padding: 40px;
+  /* ESTILOS APLICADOS APENAS SE O USUÁRIO ESCOLHER O MODO FIXO */
+  .layout-root.sidebar-fixed .sidebar {
+    transform: translateX(0);
+    position: static;
   }
 
-  .main-content-header {
-    padding: 10px 15px;
-  }
-  
-  .main-content > *:not(header) {
-    padding: 15px;
+  .layout-root.sidebar-fixed .content-wrapper {
+    width: calc(100% - 260px);
   }
 
+  .layout-root.sidebar-fixed .menu-button {
+    display: none;
+  }
+
+  /* NOVA REGRA PARA ESCONDER O LOGO NO MODO FIXO */
+  .layout-root.sidebar-fixed .topbar-logo {
+    display: none;
+  }
+
+  .layout-root.sidebar-fixed .sidebar-overlay.open {
+    display: none;
+  }
 }

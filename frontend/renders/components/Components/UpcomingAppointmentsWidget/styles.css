@@ -1,0 +1,82 @@
+.upcoming-appointments {
+  display: flex;
+  flex-direction: column;
+}
+
+.upcoming-appointments h2 {
+  margin-top: 0;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 15px;
+}
+
+.upcoming-appointments p {
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 20px 0;
+  flex-grow: 1;
+}
+
+.upcoming-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.upcoming-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px 5px;
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.upcoming-item:hover {
+  background-color: var(--background-tertiary);
+}
+
+.upcoming-item:last-child {
+  border-bottom: none;
+}
+
+.upcoming-date {
+  background-color: color-mix(in srgb, var(--accent-primary) 15%, transparent);
+  color: var(--accent-primary);
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 10px;
+  text-align: center;
+  min-width: 50px;
+}
+
+.upcoming-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.upcoming-title {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.upcoming-time {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.view-full-agenda-btn {
+  margin-top: auto; /* Empurra o botão para o final do card */
+  padding-top: 20px;
+  background: none;
+  border: none;
+  border-top: 1px solid var(--border-color);
+  width: 100%;
+  text-align: center;
+  font-weight: 600;
+  color: var(--accent-primary);
+  cursor: pointer;
+  padding: 15px 0 0 0;
+  margin-top: 15px;
+}
