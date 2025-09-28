@@ -37,6 +37,7 @@ import Profile from '../../renders/pages/Profile';
 import AppearanceSettings from '../../renders/pages/Settings/AppearanceSettings';
 import WorkHoursSettings from '../../renders/pages/Settings/WorkHoursSettings';
 import NotificationSettings from '../../renders/pages/Settings/NotificationSettings';
+import PaymentSuccess from '../../renders/pages/PaymentSuccess';
 
 const AppRoutes: React.FC = () => {
   const { currentUser, loading } = useAuth();
@@ -52,34 +53,27 @@ const AppRoutes: React.FC = () => {
         <Route path="/login" element={currentUser ? <Navigate to="/" replace /> : <Login />} />
         <Route path="/register" element={currentUser ? <Navigate to="/" replace /> : <Register />} />
         <Route path="/esqueci-minha-senha" element={currentUser ? <Navigate to="/" replace /> : <ForgotPassword />} />
-
+        
         {/* Container para todas as rotas que exigem login */}
         <Route element={<ProtectedRoute />}>
 
-          {/* Rota da Videochamada - Acessível por ambos os papéis */}
+          {/* Rota da Videochamada - Acessível por múltiplos papéis */}
           <Route path="/consulta/:appointmentId" element={<VideoCall />} />
-
-
-          {/* ROTA DE CONFIGURAÇÕES ATUALIZADA */}
-          <Route path="configuracoes" element={<DashboardLayout title="Configurações"><Settings /></DashboardLayout>}>
-            {/* Rota padrão: redireciona para a primeira aba */}
-            <Route index element={<Navigate to="aparencia" replace />} />
-            <Route path="aparencia" element={<AppearanceSettings />} />
-            <Route path="horarios" element={<WorkHoursSettings />} />
-            <Route path="notificacoes" element={<NotificationSettings />} />
-          </Route>
 
           {/* Rota Raiz: Apenas redireciona baseado na função */}
           <Route path="/" element={<HomeRedirect />} />
+          
+          {/* ROTA DE SUCESSO DO PAGAMENTO */}
+          <Route path="/pagamento-sucesso" element={<PaymentSuccess />} />
 
           {/* Container para rotas de Administrador */}
           <Route path="/admin" element={<AdminRoute />}>
             <Route element={<AdminLayout />}>
-              <Route path="dashboard" element={<AdminDashboard />} />
+              <Route path="dashboard" element={<AdminDashboard/>} />
               <Route path="psicologos" element={<ManagePsychologists />} />
             </Route>
           </Route>
-
+          
           {/* Container para rotas de Psicólogo */}
           <Route element={<PsychologistRoute />}>
             <Route path="dashboard" element={<DashboardLayout title="Início"><Dashboard /></DashboardLayout>} />
@@ -89,8 +83,13 @@ const AppRoutes: React.FC = () => {
             <Route path="pacientes/:patientId" element={<DashboardLayout title="Prontuário do Paciente"><PatientDetail /></DashboardLayout>} />
             <Route path="agenda" element={<DashboardLayout title="Agenda"><Agenda /></DashboardLayout>} />
             <Route path="financeiro" element={<DashboardLayout title="Financeiro"><Financeiro /></DashboardLayout>} />
-            <Route path="configuracoes" element={<DashboardLayout title="Configurações"><Settings /></DashboardLayout>} />
             <Route path="assinatura" element={<DashboardLayout title="Assinatura"><Subscription /></DashboardLayout>} />
+            <Route path="configuracoes" element={<DashboardLayout title="Configurações"><Settings /></DashboardLayout>}>
+              <Route index element={<Navigate to="aparencia" replace />} />
+              <Route path="aparencia" element={<AppearanceSettings />} />
+              <Route path="horarios" element={<WorkHoursSettings />} />
+              <Route path="notificacoes" element={<NotificationSettings />} />
+            </Route>
           </Route>
 
           {/* Container para rotas de Paciente */}

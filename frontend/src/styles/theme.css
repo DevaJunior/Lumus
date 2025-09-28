@@ -11,11 +11,17 @@
   --text-secondary: #1d1d1d;           /* Cinza médio para textos secundários e descrições */
   --text-tertiary: #333333;            /* Cinza mais claro para placeholders e ícones discretos */
   
-  --accent-primary: #fd56a4;           /* Um azul escuro / cinza muito escuro para botões de ação (Finish, Send Invite) */
-  --accent-primary-hover: #f8157f;     /* Um tom ligeiramente mais escuro para o hover */
+  --accent-primary: #333333;
+  --accent-primary-hover: #f8157f;
   
-  --accent-positive: #10B981;           /* Verde para ícones de sucesso (o check verde do "Company Info") */
-  --accent-positive-hover: #059669;    /* Verde mais escuro para hover */
+  /* --accent-primary: #fd56a4;           //Um azul escuro / cinza muito escuro para botões de ação (Finish, Send Invite)
+  --accent-primary-hover: #f8157f;     //Um tom ligeiramente mais escuro para o hover */
+  
+  /* --accent-positive: #10B981;           // Verde para ícones de sucesso (o check verde do "Company Info")
+  --accent-positive-hover: #059669;    // Verde mais escuro para hover */
+  
+  --accent-positive: #131313;           /* Verde para ícones de sucesso (o check verde do "Company Info") */
+  --accent-positive-hover: #1d1d1d;    /* Verde mais escuro para hover */
   
   --accent-negative: #EF4444;           /* Vermelho para alertas ou ícones de lixeira (se necessário) */
   --accent-negative-hover: #DC2626;    /* Vermelho mais escuro para hover */

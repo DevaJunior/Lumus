@@ -1,35 +1,53 @@
-import { doc, getDoc, setDoc, Timestamp, updateDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc, Timestamp } from "firebase/firestore";
 import { db } from "../config/firebase";
 
-// Define a estrutura para um único horário de trabalho
-export interface WorkHour {
-  daysOfWeek: number[];
+// NOVA ESTRUTURA PARA HORÁRIOS
+// Um único intervalo de tempo
+export interface TimeInterval {
+  id: string;
+  name: string;
   startTime: string;
   endTime: string;
 }
 
+// O agendamento para um dia agora contém um ARRAY de intervalos
+export interface DaySchedule {
+  isEnabled: boolean;
+  intervals: TimeInterval[];
+}
+export type WorkSchedule = Record<number, DaySchedule>;
+
 export interface UserProfile {
   role: 'psychologist' | 'patient' | 'admin';
   status?: 'pending' | 'approved' | 'suspended';
-  workHours?: WorkHour[];
+  workSchedule?: WorkSchedule;
   subscriptionPlan?: 'basic' | 'premium' | null;
   subscriptionStatus?: 'active' | 'inactive';
   subscriptionEndDate?: Timestamp;
-  email?: string; // NOVO CAMPO
+  email?: string;
 }
 
+const createDefaultSchedule = (): WorkSchedule => {
+  const schedule: WorkSchedule = {};
+  for (let i = 0; i < 7; i++) {
+    const isWeekday = i > 0 && i < 6;
+    // O primeiro intervalo é sempre o "Horário de Trabalho"
+    schedule[i] = { isEnabled: isWeekday, intervals: [{ id: `default-${i}`, name: "Horário de Trabalho", startTime: '09:00', endTime: '18:00' }] };
+  }
+  return schedule;
+};
+
 class UserService {
-  // ATUALIZADA para receber e salvar o e-mail
   async createPsychologistProfile(userId: string, email: string): Promise<void> {
     try {
       const userDocRef = doc(db, "users", userId);
-      await setDoc(userDocRef, {
-        role: 'psychologist',
+      await setDoc(userDocRef, { 
+        role: 'psychologist', 
         status: 'pending',
-        workHours: [],
+        workSchedule: createDefaultSchedule(),
         subscriptionPlan: null,
         subscriptionStatus: 'inactive',
-        email: email // Salva o e-mail no Firestore
+        email: email
       });
     } catch (error) {
       console.error("Erro ao criar o perfil do psicólogo:", error);
@@ -37,7 +55,6 @@ class UserService {
     }
   }
 
-  // Busca o perfil completo de um usuário
   async getUserProfile(userId: string): Promise<UserProfile | null> {
     try {
       const userDocRef = doc(db, "users", userId);
@@ -51,23 +68,23 @@ class UserService {
       throw new Error("Não foi possível obter os dados do usuário.");
     }
   }
-
-  // Atualizar os horários de trabalho
-  async updateWorkHours(userId: string, workHours: WorkHour[]): Promise<void> {
+  
+  async updateWorkSchedule(userId: string, workSchedule: WorkSchedule): Promise<void> {
     try {
       const userDocRef = doc(db, "users", userId);
-      await updateDoc(userDocRef, { workHours: workHours });
+      await updateDoc(userDocRef, { workSchedule });
     } catch (error) {
       console.error("Erro ao atualizar horários de trabalho:", error);
       throw new Error("Não foi possível salvar os horários.");
     }
   }
 
+  // FUNÇÃO RESTAURADA E MANTIDA
   async updateUserSubscription(userId: string, plan: 'basic' | 'premium'): Promise<void> {
     try {
       const userDocRef = doc(db, "users", userId);
       const endDate = new Date();
-      endDate.setDate(endDate.getDate() + 30); // Adiciona 30 dias de assinatura
+      endDate.setDate(endDate.getDate() + 30);
 
       await updateDoc(userDocRef, {
         subscriptionPlan: plan,
@@ -79,7 +96,6 @@ class UserService {
       throw new Error("Não foi possível atualizar a assinatura.");
     }
   }
-
 }
 
 export const userService = new UserService();

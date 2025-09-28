@@ -17,6 +17,8 @@
     "@fullcalendar/interaction": "^6.1.19",
     "@fullcalendar/react": "^6.1.19",
     "@fullcalendar/timegrid": "^6.1.19",
+    "@stripe/react-stripe-js": "^4.0.2",
+    "@stripe/stripe-js": "^7.9.0",
     "firebase": "^12.3.0",
     "fullcalendar": "^6.1.19",
     "react": "^19.1.1",
