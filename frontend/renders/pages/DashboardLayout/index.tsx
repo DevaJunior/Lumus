@@ -4,6 +4,7 @@ import './styles.css';
 import { useAuth } from '../../../src/contexts/AuthContext';
 import { authService } from '../../../src/services/authService';
 import { useTheme } from '../../../src/contexts/ThemeContext';
+import NotificationBell from '../../components/Components/NotificationBell';
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -67,6 +68,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         </div>
       </aside>
       <main className="main-content">
+        <header className="main-content-header">
+          <NotificationBell />
+        </header>
         {children}
       </main>
     </div>

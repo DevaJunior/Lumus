@@ -116,6 +116,30 @@
   color: var(--background-secondary);
 }
 
+.main-content {
+  flex-grow: 1;
+  padding: 0; /* Removido para o header e conteúdo controlarem */
+  overflow-y: auto;
+  background-color: var(--background-primary);
+  display: flex; /* Adicionado */
+  flex-direction: column; /* Adicionado */
+}
+
+.main-content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 40px;
+  background-color: var(--background-secondary);
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0; /* Impede que o header encolha */
+}
+
+/* Adiciona padding de volta ao conteúdo que vem depois do header */
+.main-content > *:not(header) {
+  padding: 40px;
+}
+
 /* Media Query para tablets e telas maiores */
 @media (min-width: 768px) {
   .sidebar {
@@ -135,4 +159,13 @@
     flex-grow: 1;
     padding: 40px;
   }
+
+  .main-content-header {
+    padding: 10px 15px;
+  }
+  
+  .main-content > *:not(header) {
+    padding: 15px;
+  }
+
 }

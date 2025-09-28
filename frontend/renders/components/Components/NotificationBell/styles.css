@@ -1,0 +1,66 @@
+.notification-bell {
+  position: relative;
+}
+.bell-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  position: relative;
+}
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: var(--accent-negative);
+  color: #fff;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 0.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+.notification-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 350px;
+  max-height: 400px;
+  overflow-y: auto;
+  background-color: var(--background-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  z-index: 1001;
+}
+.notification-dropdown ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.notification-dropdown li {
+  padding: 15px;
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+}
+.notification-dropdown li:hover {
+  background-color: var(--background-tertiary);
+}
+.notification-dropdown li.unread {
+  background-color: color-mix(in srgb, var(--accent-primary) 10%, var(--background-secondary));
+}
+.notification-dropdown li p {
+  margin: 0 0 5px 0;
+  color: var(--text-primary);
+}
+.notification-dropdown li small {
+  color: var(--text-secondary);
+}
+.no-notifications {
+  padding: 20px;
+  text-align: center;
+  color: var(--text-secondary);
+}
