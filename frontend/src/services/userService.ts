@@ -10,25 +10,26 @@ export interface WorkHour {
 
 export interface UserProfile {
   role: 'psychologist' | 'patient' | 'admin';
-  status?: 'pending' | 'approved' | 'suspended'; // Status da conta
+  status?: 'pending' | 'approved' | 'suspended';
   workHours?: WorkHour[];
-  // NOVOS CAMPOS DE ASSINATURA
   subscriptionPlan?: 'basic' | 'premium' | null;
   subscriptionStatus?: 'active' | 'inactive';
   subscriptionEndDate?: Timestamp;
+  email?: string; // NOVO CAMPO
 }
 
 class UserService {
-  async createPsychologistProfile(userId: string): Promise<void> {
+  // ATUALIZADA para receber e salvar o e-mail
+  async createPsychologistProfile(userId: string, email: string): Promise<void> {
     try {
       const userDocRef = doc(db, "users", userId);
       await setDoc(userDocRef, {
         role: 'psychologist',
         status: 'pending',
         workHours: [],
-        // Inicia sem plano e com status inativo
         subscriptionPlan: null,
-        subscriptionStatus: 'inactive'
+        subscriptionStatus: 'inactive',
+        email: email // Salva o e-mail no Firestore
       });
     } catch (error) {
       console.error("Erro ao criar o perfil do psicólogo:", error);

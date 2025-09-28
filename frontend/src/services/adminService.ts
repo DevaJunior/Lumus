@@ -1,8 +1,10 @@
-import { collection, query, where, getDocs, getCountFromServer, type DocumentData } from "firebase/firestore";
+import { collection, query, where, getDocs, getCountFromServer, type DocumentData, updateDoc, doc } from "firebase/firestore";
 import { db } from "../config/firebase";
 import type { UserProfile } from "./userService";
 
-export interface PsychologistData extends UserProfile { uid: string; }
+export interface PsychologistData extends UserProfile {
+    uid: string;
+}
 
 export interface PlatformStats {
   psychologistCount: number;
@@ -28,7 +30,7 @@ class AdminService {
     }
   }
 
-  // NOVA FUNÇÃO
+  // FUNÇÃO FALTANDO NA SUA VERSÃO
   async getPlatformStats(): Promise<PlatformStats> {
     try {
       const psyQuery = query(collection(db, "users"), where("role", "==", "psychologist"));
@@ -61,6 +63,16 @@ class AdminService {
     } catch (error) {
       console.error("Erro ao buscar estatísticas da plataforma:", error);
       throw new Error("Não foi possível carregar as estatísticas.");
+    }
+  }
+
+  async updatePsychologistStatus(uid: string, status: 'approved' | 'suspended'): Promise<void> {
+    try {
+      const userDocRef = doc(db, "users", uid);
+      await updateDoc(userDocRef, { status: status });
+    } catch (error) {
+      console.error("Erro ao atualizar status do psicólogo:", error);
+      throw new Error("Não foi possível atualizar o status.");
     }
   }
 }
