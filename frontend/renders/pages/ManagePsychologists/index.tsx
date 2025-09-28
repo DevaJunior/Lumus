@@ -23,10 +23,11 @@ const ManagePsychologists: React.FC = () => {
     fetchPsychologists();
   }, [fetchPsychologists]);
 
-  const handleApprove = async (uid: string) => {
-    if (window.confirm("Tem certeza que deseja aprovar este psicólogo?")) {
-      await adminService.updatePsychologistStatus(uid, 'approved');
-      fetchPsychologists(); // Recarrega a lista
+  const handleStatusUpdate = async (uid: string, status: 'approved' | 'suspended') => {
+    const actionText = status === 'approved' ? 'aprovar' : 'suspender';
+    if (window.confirm(`Tem certeza que deseja ${actionText} este psicólogo?`)) {
+      await adminService.updatePsychologistStatus(uid, status);
+      fetchPsychologists();
     }
   };
 
@@ -41,7 +42,7 @@ const ManagePsychologists: React.FC = () => {
           <table className="admin-table">
             <thead>
               <tr>
-                <th>UID do Usuário</th>
+                <th>E-mail</th>
                 <th>Status</th>
                 <th>Ações</th>
               </tr>
@@ -49,18 +50,30 @@ const ManagePsychologists: React.FC = () => {
             <tbody>
               {psychologists.map(psy => (
                 <tr key={psy.uid}>
-                  <td data-label="UID">{psy.uid}</td>
+                  <td data-label="E-mail">{psy.email || psy.uid}</td>
                   <td data-label="Status">
                     <span className={`status-badge status-${psy.status}`}>
-                      {psy.status === 'pending' ? 'Pendente' : 'Aprovado'}
+                      {psy.status === 'pending' ? 'Pendente' : psy.status === 'approved' ? 'Aprovado' : 'Suspenso'}
                     </span>
                   </td>
                   <td data-label="Ações">
-                    {psy.status === 'pending' && (
-                      <button className="approve-button" onClick={() => handleApprove(psy.uid)}>
-                        Aprovar
-                      </button>
-                    )}
+                    <div className="actions-cell">
+                      {psy.status === 'pending' && (
+                        <button className="action-button approve" onClick={() => handleStatusUpdate(psy.uid, 'approved')}>
+                          Aprovar
+                        </button>
+                      )}
+                      {psy.status === 'approved' && (
+                        <button className="action-button suspend" onClick={() => handleStatusUpdate(psy.uid, 'suspended')}>
+                          Suspender
+                        </button>
+                      )}
+                      {psy.status === 'suspended' && (
+                        <button className="action-button approve" onClick={() => handleStatusUpdate(psy.uid, 'approved')}>
+                          Reativar
+                        </button>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))}

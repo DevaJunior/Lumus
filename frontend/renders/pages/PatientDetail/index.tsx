@@ -17,7 +17,7 @@ const PatientDetail: React.FC = () => {
   const [notes, setNotes] = useState<SessionNote[]>([]);
   const [sharedDiaryEntries, setSharedDiaryEntries] = useState<DiaryEntry[]>([]);
   const [newNoteContent, setNewNoteContent] = useState('');
-  
+
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmittingNote, setIsSubmittingNote] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +28,7 @@ const PatientDetail: React.FC = () => {
     try {
       setIsLoading(true);
       setError(null);
-      
+
       const [patientData, notesData, diaryData] = await Promise.all([
         patientService.getPatientById(patientId),
         patientService.getSessionNotes(patientId),
@@ -62,7 +62,7 @@ const PatientDetail: React.FC = () => {
     try {
       await patientService.addSessionNote(patientId, { content: newNoteContent });
       setNewNoteContent('');
-      
+
       const updatedNotes = await patientService.getSessionNotes(patientId);
       setNotes(updatedNotes);
     } catch (err) {
@@ -74,22 +74,18 @@ const PatientDetail: React.FC = () => {
 
   if (isLoading) {
     return (
-        <DashboardLayout>
-            <div className="loading-state">Carregando prontuário...</div>
-        </DashboardLayout>
+      <div className="loading-state">Carregando prontuário...</div>
     );
   }
 
   if (error) {
     return (
-        <DashboardLayout>
-            <div className="error-state">{error}</div>
-        </DashboardLayout>
+      <div className="error-state">{error}</div>
     );
   }
 
   return (
-    <DashboardLayout>
+    <>
       <div className="patient-detail-page">
         <header className="detail-header">
           <div className="patient-info">
@@ -170,7 +166,7 @@ const PatientDetail: React.FC = () => {
           </div>
         </section>
       </div>
-    </DashboardLayout>
+    </>
   );
 };
 

@@ -1,18 +1,23 @@
-import React, { type ReactNode } from 'react';
+import React, { useState, type ReactNode } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import './styles.css';
 import { useAuth } from '../../../src/contexts/AuthContext';
 import { authService } from '../../../src/services/authService';
 import { useTheme } from '../../../src/contexts/ThemeContext';
+import NotificationBell from '../../components/Components/NotificationBell';
+import { MenuIcon } from '../../components/Components/Icons';
+import { useSettings } from '../../../src/contexts/SettingsContext';
 
 interface DashboardLayoutProps {
   children: ReactNode;
+  title: string;
 }
 
-const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
+const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) => {
   const { currentUser } = useAuth();
-  const { theme, toggleTheme } = useTheme();
+  const { sidebarBehavior } = useSettings();
   const navigate = useNavigate();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -23,15 +28,25 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
     }
   };
 
+  const layoutRootClass = `layout-root ${sidebarBehavior === 'fixed' ? 'sidebar-fixed' : ''}`;
+
   return (
-    <div className="layout-container">
-      <aside className="sidebar">
-        {/* ... (código da sidebar header e nav) ... */}
+    <div className={layoutRootClass}>
+      <div
+        className={`sidebar-overlay ${isSidebarOpen ? 'open' : ''}`}
+        onClick={() => setIsSidebarOpen(false)}
+      />
+
+      <aside className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
+          {/* Este logo é para a sidebar quando ela está aberta */}
           <h1 className="sidebar-logo">Lumus</h1>
         </div>
         <nav className="sidebar-nav">
-          <NavLink to="/" end className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+          <NavLink to="/perfil" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+            Perfil
+          </NavLink>
+          <NavLink to="/dashboard" end className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
             Início
           </NavLink>
           <NavLink to="/mensagens" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
@@ -46,29 +61,42 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           <NavLink to="/financeiro" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
             Financeiro
           </NavLink>
-          <NavLink to="/configuracoes" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
-            Configurações
-          </NavLink>
           <NavLink to="/assinatura" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
             Assinatura
           </NavLink>
         </nav>
         <div className="sidebar-footer">
-          <div className="theme-toggle">
-            <span>Tema: {theme === 'light' ? 'Claro' : 'Escuro'}</span>
-            <button onClick={toggleTheme} className="theme-toggle-button">
-              Alterar Tema
-            </button>
-          </div>
-          <div className="user-profile">
+          {/* <div className="user-profile">
             <span>{currentUser?.email}</span>
             <button onClick={handleLogout} className="logout-button">Sair</button>
-          </div>
+          </div> */}
+
+          <NavLink to="/configuracoes" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+            Configurações
+          </NavLink>
+          <button onClick={handleLogout} className="logout-button">Sair</button>
         </div>
       </aside>
-      <main className="main-content">
-        {children}
-      </main>
+
+      <div className="content-wrapper">
+        <header className="topbar">
+          <div className="topbar-left">
+            <h1 className="topbar-logo">Lumus</h1>
+          </div>
+          <div className="topbar-center">
+            <h2 className="topbar-title">{title}</h2>
+          </div>
+          <div className="topbar-right">
+            <NotificationBell />
+            <button className="menu-button" onClick={() => setIsSidebarOpen(true)}>
+              <MenuIcon />
+            </button>
+          </div>
+        </header>
+        <main className="page-content-area">
+          {children}
+        </main>
+      </div>
     </div>
   );
 };

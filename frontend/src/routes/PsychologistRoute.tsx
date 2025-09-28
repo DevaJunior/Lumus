@@ -11,23 +11,27 @@ const PsychologistRoute: React.FC = () => {
   
   const profile = userProfile as UserProfile;
 
-  // Se a conta está pendente de aprovação, bloqueia
+  // Se a conta está aprovada e a assinatura ativa, permite o acesso
+  if (profile?.role === 'psychologist' && profile?.status === 'approved' && profile?.subscriptionStatus === 'active') {
+    return <Outlet />;
+  }
+  
+  if (profile?.role === 'psychologist' && profile?.status === 'approved' && profile?.subscriptionStatus !== 'active') {
+    return <Navigate to="/assinatura" replace />;
+  }
+
+  // Mensagens para outros status
   if (profile?.role === 'psychologist' && profile?.status === 'pending') {
     alert("Sua conta está pendente de aprovação pelo administrador.");
     return <Navigate to="/login" replace />;
   }
 
-  // Se a conta está aprovada, MAS a assinatura está inativa, redireciona para a página de assinatura
-  if (profile?.role === 'psychologist' && profile?.status === 'approved' && profile?.subscriptionStatus !== 'active') {
-    return <Navigate to="/assinatura" replace />;
+  if (profile?.role === 'psychologist' && profile?.status === 'suspended') {
+    alert("Sua conta foi suspensa. Por favor, entre em contato com o suporte.");
+    return <Navigate to="/login" replace />;
   }
 
-  // Se está tudo certo (aprovado e assinatura ativa), permite o acesso
-  if (profile?.role === 'psychologist' && profile?.status === 'approved' && profile?.subscriptionStatus === 'active') {
-    return <Outlet />;
-  }
-  
-  // Para qualquer outro caso (paciente, etc.), redireciona para a rota correta
+  // Para qualquer outro caso (paciente, etc.), redireciona
   return <Navigate to="/" replace />;
 };
 

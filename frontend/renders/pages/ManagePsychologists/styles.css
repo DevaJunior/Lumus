@@ -1,52 +1,63 @@
 .admin-page {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-  color: var(--text-primary);
+  /* ... */
 }
-.admin-page h1 {
-  border-bottom: 1px solid var(--border-color);
-  padding-bottom: 15px;
-}
+
 .admin-table-container {
-  background-color: var(--background-secondary);
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px var(--shadow-color);
-  overflow-x: auto; /* Para responsividade da tabela */
+  /* ... */
 }
+
 .admin-table {
-  width: 100%;
-  border-collapse: collapse;
+  /* ... */
 }
-.admin-table th, .admin-table td {
+
+.admin-table th,
+.admin-table td {
   padding: 12px;
   border-bottom: 1px solid var(--border-color);
   text-align: left;
-  white-space: nowrap; /* Impede que o conteúdo quebre linha */
+  white-space: nowrap;
 }
+
 .status-badge {
   padding: 4px 10px;
   border-radius: 12px;
   font-weight: 600;
   font-size: 0.9rem;
+  text-transform: capitalize;
 }
+
 .status-approved {
   background-color: color-mix(in srgb, var(--accent-positive) 20%, transparent);
   color: var(--accent-positive);
 }
+
 .status-pending {
   background-color: color-mix(in srgb, orange 20%, transparent);
   color: orange;
 }
-.approve-button {
-  background-color: var(--accent-positive);
-  color: #fff;
+
+.status-suspended {
+  background-color: var(--background-tertiary);
+  color: var(--text-secondary);
+}
+
+.actions-cell {
+  display: flex;
+}
+
+.action-button {
   border: none;
   padding: 8px 16px;
   border-radius: 6px;
   cursor: pointer;
+  color: #fff;
+  font-weight: 600;
 }
-.approve-button:hover {
-  background-color: var(--accent-positive-hover);
+
+.action-button.approve {
+  background-color: var(--accent-positive);
+}
+
+.action-button.suspend {
+  background-color: var(--accent-negative);
 }

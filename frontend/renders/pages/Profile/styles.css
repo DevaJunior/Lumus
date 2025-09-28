@@ -1,0 +1,23 @@
+.profile-card {
+  max-width: 600px;
+  background-color: var(--background-secondary);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+.info-group {
+  margin-bottom: 20px;
+}
+.info-group label {
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.info-group p {
+  color: var(--text-primary);
+  font-size: 1.1rem;
+}
+.uid-text {
+  font-family: monospace;
+  font-size: 0.9rem !important;
+  word-break: break-all;
+}

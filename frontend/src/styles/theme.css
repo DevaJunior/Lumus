@@ -1,50 +1,56 @@
-/* Tema Light (Padrão) */
 :root {
-  --background-primary: #f0f2f5;    /* Fundo principal da aplicação */
-  --background-secondary: #ffffff;   /* Fundo de cards, modais, inputs */
-  --background-tertiary: #e4e6eb;    /* Fundo de botões secundários, hovers */
+  /* Tipografia */
+  --font-family-sans: 'Inter', sans-serif; /* Assumindo Inter ou similar */
+
+  /* Tema: Minimalismo e Eficiência (Baseado na Imagem) */
+  --background-primary: #FFFFFF;      /* Branco puro para a maioria dos fundos */
+  --background-secondary: #FFFFFF;    /* Branco para cards e elementos principais */
+  --background-tertiary: #F8F9FB;      /* Um cinza muito, muito claro para fundos sutis (como o do navegador) */
   
-  --text-primary: #1c1e21;         /* Texto principal, títulos */
-  --text-secondary: #606770;        /* Texto secundário, parágrafos */
+  --text-primary: #131313;             /* Preto muito escuro, quase off-black, para títulos e textos importantes */
+  --text-secondary: #1d1d1d;           /* Cinza médio para textos secundários e descrições */
+  --text-tertiary: #333333;            /* Cinza mais claro para placeholders e ícones discretos */
   
-  --accent-primary: #1877f2;         /* Cor principal de botões e links */
-  --accent-primary-hover: #166fe5;  /* Hover da cor principal */
+  --accent-primary: #fd56a4;           /* Um azul escuro / cinza muito escuro para botões de ação (Finish, Send Invite) */
+  --accent-primary-hover: #f8157f;     /* Um tom ligeiramente mais escuro para o hover */
   
-  --accent-positive: #42b72a;        /* Cor para ações de sucesso (Cadastro) */
-  --accent-positive-hover: #36a420; /* Hover da cor de sucesso */
+  --accent-positive: #10B981;           /* Verde para ícones de sucesso (o check verde do "Company Info") */
+  --accent-positive-hover: #059669;    /* Verde mais escuro para hover */
   
-  --accent-negative: #fa383e;        /* Cor para ações de perigo (Sair) */
-  --accent-negative-hover: #e12d33; /* Hover da cor de perigo */
+  --accent-negative: #EF4444;           /* Vermelho para alertas ou ícones de lixeira (se necessário) */
+  --accent-negative-hover: #DC2626;    /* Vermelho mais escuro para hover */
   
-  --border-color: #dddfe2;          /* Cor de bordas */
-  --shadow-color: rgba(0, 0, 0, 0.1);
+  --border-color: #E5E7EB;              /* Cor da borda para inputs e divisores */
+  --shadow-color: rgba(0, 0, 0, 0.04); /* Sombra muito suave, quase imperceptível */
 }
 
-/* Tema Dark */
 [data-theme='dark'] {
-  --background-primary: #18191a;
-  --background-secondary: #242526;
-  --background-tertiary: #3a3b3c;
+  --background-primary: #111827;
+  --background-secondary: #1F2937;
+  --background-tertiary: #374151;
   
-  --text-primary: #e4e6eb;
-  --text-secondary: #b0b3b8;
+  --text-primary: #F9FAFB;
+  --text-secondary: #9CA3AF;
+  --text-tertiary: #6B7280;
   
-  --accent-primary: #2d88ff;
-  --accent-primary-hover: #509dff;
+  --accent-primary: #6366F1;
+  --accent-primary-hover: #4F46E5;
+
+  --accent-positive: #10B981;
+  --accent-positive-hover: #059669;
+
+  --accent-negative: #F87171;
+  --accent-negative-hover: #EF4444;
   
-  --accent-positive: #42b72a;
-  --accent-positive-hover: #36a420;
-  
-  --accent-negative: #fa383e;
-  --accent-negative-hover: #e12d33;
-  
-  --border-color: #3e4042;
-  --shadow-color: rgba(0, 0, 0, 0.3);
+  --border-color: #374151;
+  --shadow-color: rgba(0, 0, 0, 0.2);
 }
 
-/* Transição suave de cores ao trocar o tema */
 body {
   background-color: var(--background-primary);
   color: var(--text-secondary);
+  font-family: var(--font-family-sans);
   transition: background-color 0.2s ease, color 0.2s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

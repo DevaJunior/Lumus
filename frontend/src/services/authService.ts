@@ -30,10 +30,8 @@ class AuthService {
   async register(email: string, password: string): Promise<UserCredential> {
     try {
       const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
-      // ATUALIZAÇÃO CRÍTICA:
-      // Após criar o usuário na autenticação, cria o perfil dele no Firestore
-      // com role 'psychologist' e status 'pending'.
-      await userService.createPsychologistProfile(userCredential.user.uid);
+      // ATUALIZADO para passar o e-mail para a função de criação de perfil
+      await userService.createPsychologistProfile(userCredential.user.uid, email);
       return userCredential;
     } catch (error) {
       console.error("Erro no registro: ", error);

@@ -1,13 +1,13 @@
 import React from 'react';
 import './styles.css';
-import DashboardLayout from '../DashboardLayout';
 import PendingAppointmentsWidget from './../../components/Components/PendingAppointmentsWidget/index';
+import UpcomingAppointmentsWidget from '../../components/Components/UpcomingAppointmentsWidget';
 
 const Dashboard: React.FC = () => {
-  // A função onUpdate pode ser usada no futuro para atualizar outros widgets
   const handleWidgetUpdate = () => {
+    // Esta função pode ser usada para forçar a recarga de múltiplos widgets
+    // Por enquanto, podemos deixar um log
     console.log("Um widget foi atualizado, recarregando dados do dashboard se necessário.");
-    // Ex: forceRerender(prev => prev + 1);
   };
 
   return (
@@ -19,11 +19,9 @@ const Dashboard: React.FC = () => {
 
       <div className="dashboard-grid">
         <PendingAppointmentsWidget onUpdate={handleWidgetUpdate} />
-        {/* Futuramente, outros widgets podem ser adicionados aqui */}
-        <div className="widget-placeholder">
-          <h2>Próximas Consultas</h2>
-          <p>Em breve...</p>
-        </div>
+        
+        {/* SUBSTITUI O PLACEHOLDER PELO NOVO WIDGET */}
+        <UpcomingAppointmentsWidget />
       </div>
     </div>
   );

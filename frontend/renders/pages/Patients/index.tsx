@@ -15,7 +15,6 @@ const Patients: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
-  // ... (toda a lógica de fetchData, handlePatientAdded, handleRowClick) ...
   const fetchPatients = useCallback(async () => {
     if (currentUser) {
       try {
@@ -81,15 +80,13 @@ const Patients: React.FC = () => {
   };
 
   return (
-    // Removido o <DashboardLayout> que estava aqui
     <>
       <div className="patients-page">
-        <header className="patients-header">
-          <h1>Meus Pacientes</h1>
+        <div className="page-header-actions">
           <button className="add-patient-button" onClick={() => setIsModalOpen(true)}>
             + Adicionar Paciente
           </button>
-        </header>
+        </div>
         <div className="patients-list-container">
           {renderContent()}
         </div>
